@@ -1,8 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import application.Main;
@@ -17,11 +15,12 @@ import javafx.scene.paint.Color;
 import model.NodeCoordinate;
 import model.Player;
 import model.PlayersList;
+import model.StackCardsNode;
 
 public class PlayTableController implements Initializable
 {
 	private Main main;
-	private HashMap<Integer, NodeCoordinate> coordinates = new HashMap<>();
+	private StackCardsNode stackCardsNode = new StackCardsNode();
 	private PlayersList lstPlayers;
 	private int keyNode = 0;
 
@@ -70,6 +69,9 @@ public class PlayTableController implements Initializable
 
 	}
 
+	/**
+	 * Método que permite inicializar los nombres de los jugadores
+	 */
 	private void initializeNamePlayers()
 	{
 		lstPlayers = main.getPlayers();
@@ -121,7 +123,7 @@ public class PlayTableController implements Initializable
 
         double desplazamiento = Math.toRadians(90);
 
-        drawPolygon(360, 280, 65, 6, 0);
+        drawPolygon(360, 280, 65, 6, 0, 0);
         this.gc.setFill(Color.WHITE);
         this.gc.fill();
 
@@ -144,7 +146,7 @@ public class PlayTableController implements Initializable
 
                 double posX = 360 + valueAdd * valuex;
                 double posY = 280 + valueAdd * valuey;
-                drawPolygon(posX, posY, 65, 6, i);
+                drawPolygon(posX, posY, 65, 6, i, j);
                 setFillColor(i, j);
             }
 		}
@@ -159,9 +161,11 @@ public class PlayTableController implements Initializable
 	 * @param radio anchura de la línea
 	 * @param sides número de lados
 	 */
-	public void drawPolygon(double x, double y, double radio, int sides, int position)
+	public void drawPolygon(double x, double y, double radio, int sides, int position, int positionj)
 	{
         this.gc.beginPath();
+        String zone = "";
+        int reward = 0;
 
         for (int i = 0; i <= sides; i++)
         {
@@ -169,7 +173,40 @@ public class PlayTableController implements Initializable
             double posY = y + radio * Math.sin(i * 2 * Math.PI / sides);
             if (position == 0 || position == 2)
             {
-            	addNode(posX, posY);
+            	if (position == 0)
+            	{
+            		zone = "Centro";
+            		reward = 4;
+            	}
+            	else
+            	{
+            		reward = 3;
+            		switch (positionj)
+                	{
+    	            	case 0:
+    	    				zone = "Violeta";
+    	    				break;
+    	    			case 1:
+    	    				zone = "Azul";
+    	    				break;
+    	    			case 2:
+    	    				zone = "Verde";
+    	    				break;
+    	    			case 3:
+    	    				zone = "Amarillo";
+    	    				break;
+    	    			case 4:
+    	    				zone = "Naranja";
+    	    				break;
+    	    			case 5:
+    	    				zone = "Rojo";
+    	    				break;
+    	    			default:
+    	    				break;
+    				}
+            	}
+
+            	addNode(posX, posY, zone, reward);
             }
             this.gc.lineTo(posX, posY);
         }
@@ -181,31 +218,37 @@ public class PlayTableController implements Initializable
 	 * @param posX posición en X del nodo
 	 * @param posY posición en Y del nodo
 	 */
-	private void addNode(double posX, double posY)
+	private void addNode(double posX, double posY, String zone, int reward)
 	{
 		double newPosX = posX - 5;
 		double newPosY = posY - 5;
 		boolean isNew = true;
 
-		if (this.coordinates.size() > 0)
+		if (this.stackCardsNode.getHeadCard() != null)
 		{
-			for (int key : this.coordinates.keySet())
-			{
-				NodeCoordinate nodeAux = this.coordinates.get(key);
+			NodeCoordinate nodeAux = this.stackCardsNode.getHeadCard();
 
+			do
+			{
 				if ((int)nodeAux.getPosX() == (int)newPosX && (int)nodeAux.getPosY() == (int)newPosY)
 				{
 					isNew = false;
 					break;
 				}
-			}
+
+				nodeAux = nodeAux.getNextNode();
+            }
+            while(nodeAux != null);
 
 			if (isNew)
 			{
 				NodeCoordinate node = new NodeCoordinate();
 				node.setPosX(newPosX);
 				node.setPosY(newPosY);
-				this.coordinates.put(keyNode, node);
+				node.setNode(keyNode);
+				node.setZone(zone);
+				node.setReward(reward);
+				this.stackCardsNode.insertCard(node);
 		        keyNode++;
 			}
 		}
@@ -214,7 +257,10 @@ public class PlayTableController implements Initializable
 			NodeCoordinate node = new NodeCoordinate();
 			node.setPosX(newPosX);
 			node.setPosY(newPosY);
-			this.coordinates.put(keyNode, node);
+			node.setNode(keyNode);
+			node.setZone(zone);
+			node.setReward(reward);
+			this.stackCardsNode.insertCard(node);
 	        keyNode++;
 		}
 	}
@@ -224,16 +270,20 @@ public class PlayTableController implements Initializable
 	 */
 	private void drawNodes()
 	{
-		for (int key : this.coordinates.keySet())
+		NodeCoordinate node = this.stackCardsNode.getHeadCard();
+
+		do
 		{
-			NodeCoordinate node = this.coordinates.get(key);
 			this.gc.setFill(Color.BLACK);
-			this.gc.fillText("" + key, node.getPosX(), node.getPosY() - 6);
+			this.gc.fillText("" + node.getNode(), node.getPosX(), node.getPosY() - 6);
 			this.gc.setFill(Color.GRAY);
 			this.gc.fillOval(node.getPosX(), node.getPosY(), 12, 12);
 			this.gc.setLineWidth(3);
 			this.gc.strokeOval(node.getPosX(), node.getPosY(), 12, 12);
-		}
+
+			node = node.getNextNode();
+        } while(node != null);
+
 	}
 	/**
 	 * Método que permite asignar el color de relleno por poligono
@@ -284,6 +334,9 @@ public class PlayTableController implements Initializable
 	{
 		this.main = main;
 		this.initializeNamePlayers();
+
+		this.main.addCardNodesToGame(this.stackCardsNode);
+		this.main.viewWindowCards();
 	}
 
 }

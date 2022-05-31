@@ -215,4 +215,52 @@ public class Graph
 		this.adjacencyMatix[30][39] = 1;
 		this.adjacencyMatix[39][30] = 1;
 	}
+
+//	public List<Vertice<T>> rutaMasCorta(Vertice<T> origen, Vertice<T> destino) {
+//        resetMinDistanceEnVertices();
+//        calcularCaminos(origen);
+//        return obtenerCaminoMasCorto(destino);
+//    }
+//
+//    private void resetMinDistanceEnVertices() {
+//        for (Vertice<T> vertice: vertices) {
+//            vertice.setMinDistance(Double.POSITIVE_INFINITY);
+//            vertice.setPrevio(null);
+//        }
+//    }
+//
+//    private void calcularCaminos(Vertice<T> source) {
+//        source.setMinDistance(0.0);
+//        PriorityQueue<Vertice<T>> vertexQueue = new PriorityQueue<>();
+//        vertexQueue.add(source);
+//
+//        while (!vertexQueue.isEmpty()) {
+//            Vertice<T> poll = vertexQueue.poll();
+//
+//            // Visit each edge exiting u
+//            for (Object element : poll.getArcos()) {
+//                Arco arco = (Arco) element;
+//                Vertice<T> v = arco.getDestino();
+//                double weight = arco.getPeso();
+//                double distanceThroughU = poll.getMinDistance() + weight;
+//                if (distanceThroughU < v.getMinDistance()) {
+//                    vertexQueue.remove(v);
+//
+//                    v.setMinDistance(distanceThroughU);
+//                    v.setPrevio(poll);
+//                    vertexQueue.add(v);
+//                }
+//            }
+//        }
+//    }
+//
+//    private List<Vertice<T>> obtenerCaminoMasCorto(Vertice<T> target) {
+//        List<Vertice<T>> path = new ArrayList<>();
+//        for (Vertice<T> vertex = target; vertex != null; vertex = vertex.getPrevio()) {
+//            path.add(vertex);
+//        }
+//
+//        Collections.reverse(path);
+//        return path;
+//    }
 }

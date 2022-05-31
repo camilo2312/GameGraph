@@ -6,12 +6,14 @@ public class Game
 	private String gameName;
 	private Graph graph;
 	private PlayersList lstPlayers;
+	private StackCardsNode stackCardsNode;
 
 	public Game(String gameName)
 	{
 		this.gameName = gameName;
 		this.graph = new Graph();
 		lstPlayers = new PlayersList();
+		setStackCardsNode(new StackCardsNode());
 		addPlayer("Maquina", 1);
 	}
 
@@ -77,6 +79,33 @@ public class Game
 	public Graph getGraph()
 	{
 		return graph;
+	}
+
+	/**
+	 * Método que permite obtener los nodos de las cartas
+	 * @return stackCardsNode
+	 */
+	public StackCardsNode getStackCardsNode()
+	{
+		return stackCardsNode;
+	}
+
+	/**
+	 * Método que permite asignar el valor a uno de las cartas nodo
+	 * @param stackCardsNode
+	 */
+	public void setStackCardsNode(StackCardsNode stackCardsNode)
+	{
+		this.stackCardsNode = stackCardsNode;
+	}
+
+	/**
+	 * Método que permite obtener la carta siguiente
+	 * @return node
+	 */
+	public NodeCoordinate getHeadCardNode()
+	{
+		return this.stackCardsNode.getHeadCard();
 	}
 
 }

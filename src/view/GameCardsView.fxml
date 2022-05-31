@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="364.0" prefWidth="266.0" style="-fx-background-color: white; -fx-background-radius: 4px; -fx-border-radius: 4px;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.GameCardsController">
+<AnchorPane prefHeight="364.0" prefWidth="266.0" style="-fx-background-color: white; -fx-background-radius: 4px; -fx-border-radius: 4px;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameCardsController">
    <children>
       <AnchorPane layoutX="23.0" layoutY="21.0" prefHeight="33.0" prefWidth="219.0" style="-fx-background-color: #000000; -fx-background-radius: 4px;">
          <children>
-            <Label layoutX="85.0" layoutY="4.0" text="Titulo" textFill="WHITE">
+            <Label fx:id="lblTitleCard" layoutX="85.0" layoutY="4.0" text="Titulo" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -28,11 +27,36 @@
             <DropShadow />
          </effect>
          <children>
-            <TextArea layoutX="16.0" layoutY="14.0" prefHeight="167.0" prefWidth="168.0" text="Titulo&#10;">
+            <Label layoutX="14.0" layoutY="24.0" text="Zona: ">
                <font>
-                  <Font name="Century Gothic" size="14.0" />
+                  <Font name="Century Gothic" size="16.0" />
                </font>
-            </TextArea>
+            </Label>
+            <Label layoutX="14.0" layoutY="83.0" text="Nodo:">
+               <font>
+                  <Font name="Century Gothic" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="161.0" text="Premio:">
+               <font>
+                  <Font name="Century Gothic" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblZone" alignment="CENTER_RIGHT" layoutX="99.0" layoutY="26.0" prefHeight="17.0" prefWidth="82.0">
+               <font>
+                  <Font name="Century Gothic" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblNode" alignment="CENTER_RIGHT" layoutX="99.0" layoutY="85.0" prefHeight="17.0" prefWidth="82.0">
+               <font>
+                  <Font name="Century Gothic" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblReward" alignment="CENTER_RIGHT" layoutX="99.0" layoutY="163.0" prefHeight="17.0" prefWidth="82.0">
+               <font>
+                  <Font name="Century Gothic" size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="204.0" layoutY="62.0" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: yellow; -fx-border-radius: 200px; -fx-background-radius: 200px;">
