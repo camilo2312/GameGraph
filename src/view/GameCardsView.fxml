@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="364.0" prefWidth="266.0" style="-fx-background-color: white; -fx-background-radius: 4px; -fx-border-radius: 4px;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.GameCardsController">
+   <children>
+      <AnchorPane layoutX="23.0" layoutY="21.0" prefHeight="33.0" prefWidth="219.0" style="-fx-background-color: #000000; -fx-background-radius: 4px;">
+         <children>
+            <Label layoutX="85.0" layoutY="4.0" text="Titulo" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <effect>
+            <DropShadow height="21.01" radius="12.967500000000001" width="32.86" />
+         </effect>
+      </AnchorPane>
+      <AnchorPane layoutX="33.0" layoutY="102.0" prefHeight="200.0" prefWidth="198.0" style="-fx-background-color: #DFDEDD; -fx-background-radius: 4px;">
+         <effect>
+            <DropShadow />
+         </effect>
+         <children>
+            <TextArea layoutX="16.0" layoutY="14.0" prefHeight="167.0" prefWidth="168.0" text="Titulo&#10;">
+               <font>
+                  <Font name="Century Gothic" size="14.0" />
+               </font>
+            </TextArea>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="204.0" layoutY="62.0" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: yellow; -fx-border-radius: 200px; -fx-background-radius: 200px;">
+         <effect>
+            <DropShadow radius="7.035" width="9.14" />
+         </effect>
+         <children>
+            <ImageView fitHeight="16.0" fitWidth="13.0" layoutX="6.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="170.0" layoutY="62.0" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: yellow; -fx-border-radius: 200px; -fx-background-radius: 200px;">
+         <effect>
+            <DropShadow radius="7.035" width="9.14" />
+         </effect>
+         <children>
+            <ImageView fitHeight="16.0" fitWidth="13.0" layoutX="7.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="134.0" layoutY="62.0" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: yellow; -fx-border-radius: 200px; -fx-background-radius: 200px;">
+         <effect>
+            <DropShadow radius="7.035" width="9.14" />
+         </effect>
+         <children>
+            <ImageView fitHeight="16.0" fitWidth="13.0" layoutX="7.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchorPaneFourStar" layoutX="100.0" layoutY="62.0" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: yellow; -fx-border-radius: 200px; -fx-background-radius: 200px;">
+         <effect>
+            <DropShadow radius="7.035" width="9.14" />
+         </effect>
+         <children>
+            <ImageView fitHeight="16.0" fitWidth="13.0" layoutX="7.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/star.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Button fx:id="btnNextCard" layoutX="152.0" layoutY="319.0" mnemonicParsing="false" onAction="#nextCardAction" style="-fx-background-color: linear-gradient(#DFDEDD, #000);" text="Siguiente" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="649.0" prefWidth="886.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowGraphController">
+   <children>
+      <VBox fx:id="vBoxGraph" layoutX="16.0" layoutY="13.0" prefHeight="616.0" prefWidth="850.0" />
+   </children>
+</AnchorPane>
