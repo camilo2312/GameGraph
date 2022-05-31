@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="163.0" prefWidth="256.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddTrafficLightsController">
+   <children>
+      <AnchorPane prefHeight="33.0" prefWidth="256.0" style="-fx-background-color: red;">
+         <children>
+            <Label fx:id="lblPlayerTurn" layoutX="78.0" layoutY="6.0" text="¡Es turno de !" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="8.0" layoutY="44.0" text="Elige una ciudad y ponle un semáforo">
+         <font>
+            <Font name="Century Gothic" size="13.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboBoxNodes" layoutX="11.0" layoutY="75.0" prefHeight="25.0" prefWidth="234.0" promptText="Selecciona" style="-fx-background-color: transparent; -fx-border-color: red; -fx-border-width: 0px 0px 2px 0px;" />
+      <Button fx:id="btnAdd" layoutX="93.0" layoutY="121.0" mnemonicParsing="false" onAction="#addAction" style="-fx-background-color: linear-gradient(#F73C3C, red);" text="Asignar" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

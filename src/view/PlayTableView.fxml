@@ -15,17 +15,17 @@
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblPlayer2" layoutX="506.0" layoutY="25.0" text="Jugador 2">
+      <Label fx:id="lblPlayer6" layoutX="506.0" layoutY="26.0" text="Jugador 6">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblPlayer6" layoutX="20.0" layoutY="281.0" text="Jugador 6">
+      <Label fx:id="lblPlayer2" layoutX="20.0" layoutY="281.0" text="Jugador 2">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblPlayer5" layoutX="165.0" layoutY="531.0" text="Jugador 5">
+      <Label fx:id="lblPlayer3" layoutX="165.0" layoutY="531.0" text="Jugador 3">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>
@@ -35,7 +35,7 @@
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblPlayer3" layoutX="652.0" layoutY="281.0" text="Jugador 3">
+      <Label fx:id="lblPlayer5" layoutX="652.0" layoutY="281.0" text="Jugador 5">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>

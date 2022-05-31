@@ -115,7 +115,7 @@ public class PlayTableController implements Initializable
 	/**
 	 * Método que permite dibujar el tablero de juego
 	 */
-	public void drawTableGame()
+	private void drawTableGame()
 	{
 		int valueAdd = 0;
 		double valuex = 0;
@@ -161,7 +161,7 @@ public class PlayTableController implements Initializable
 	 * @param radio anchura de la línea
 	 * @param sides número de lados
 	 */
-	public void drawPolygon(double x, double y, double radio, int sides, int position, int positionj)
+	private void drawPolygon(double x, double y, double radio, int sides, int position, int positionj)
 	{
         this.gc.beginPath();
         String zone = "";
@@ -206,7 +206,7 @@ public class PlayTableController implements Initializable
     				}
             	}
 
-            	addNode(posX, posY, zone, reward);
+            	addNode(posX, posY, zone, reward, false);
             }
             this.gc.lineTo(posX, posY);
         }
@@ -218,7 +218,7 @@ public class PlayTableController implements Initializable
 	 * @param posX posición en X del nodo
 	 * @param posY posición en Y del nodo
 	 */
-	private void addNode(double posX, double posY, String zone, int reward)
+	private void addNode(double posX, double posY, String zone, int reward, boolean isTrafficLight)
 	{
 		double newPosX = posX - 5;
 		double newPosY = posY - 5;
@@ -248,6 +248,7 @@ public class PlayTableController implements Initializable
 				node.setNode(keyNode);
 				node.setZone(zone);
 				node.setReward(reward);
+				node.setTrafficLight(isTrafficLight);
 				this.stackCardsNode.insertCard(node);
 		        keyNode++;
 			}
@@ -260,6 +261,7 @@ public class PlayTableController implements Initializable
 			node.setNode(keyNode);
 			node.setZone(zone);
 			node.setReward(reward);
+			node.setTrafficLight(isTrafficLight);
 			this.stackCardsNode.insertCard(node);
 	        keyNode++;
 		}
@@ -337,6 +339,12 @@ public class PlayTableController implements Initializable
 
 		this.main.addCardNodesToGame(this.stackCardsNode);
 		this.main.viewWindowCards();
+	}
+
+	public void drawTafficNode(NodeCoordinate currentNode)
+	{
+		this.gc.setFill(Color.RED);
+		this.gc.fillOval(currentNode.getPosX(), currentNode.getPosY(), 12, 12);
 	}
 
 }

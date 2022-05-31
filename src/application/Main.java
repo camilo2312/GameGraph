@@ -1,18 +1,24 @@
 package application;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import controller.AddPlayersController;
+import controller.AddTrafficLightsController;
 import controller.DiceController;
 import controller.GameCardsController;
 import controller.PlayTableController;
 import controller.ShowGraphController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import model.Game;
 import model.NodeCoordinate;
+import model.Player;
 import model.PlayersList;
 import model.StackCardsNode;
+import threads.ThreadGame;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -21,7 +27,10 @@ import javafx.scene.layout.AnchorPane;
 public class Main extends Application
 {
 	private Stage primaryStage;
+	private Stage stage2;
 	private Game game = new Game("Simulador Vial");
+	private ThreadGame threadGame;
+	private PlayTableController playTableController;
 
 	@Override
 	public void start(Stage primaryStage)
@@ -84,7 +93,7 @@ public class Main extends Application
 			loader.setLocation(Main.class.getResource("../view/PlayTableView.fxml"));
 			AnchorPane rootLayout = (AnchorPane) loader.load();
 
-			PlayTableController playTableController = loader.getController();
+			playTableController = loader.getController();
 			playTableController.setMain(this);
 
 			Scene scene = new Scene(rootLayout);
@@ -123,7 +132,6 @@ public class Main extends Application
 			stage.setX(1030);
 			stage.setY(30);
 			stage.show();
-
 		}
 		catch (IOException e)
 		{
@@ -153,6 +161,35 @@ public class Main extends Application
 			stage.setX(4);
 			stage.setY(30);
 			stage.show();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Métdodo que permite mostrar la ventana para asignar un semaforo por jugador
+	 * @param userName
+	 */
+	public void viewAddTrafficLights(Player player)
+	{
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("../view/AddTrafficLightsView.fxml"));
+			Parent rootLayout = (AnchorPane) loader.load();
+
+			AddTrafficLightsController addTrafficLightsController = loader.getController();
+			addTrafficLightsController.setMain(this, player);
+
+			Scene scene = new Scene(rootLayout);
+			stage2 = new Stage();
+			stage2.setResizable(false);
+			stage2.centerOnScreen();
+			stage2.setScene(scene);
+			stage2.show();
 
 		}
 		catch (IOException e)
@@ -169,6 +206,7 @@ public class Main extends Application
 	{
 		viewWindowPlay();
 		viewWindowDice();
+		startThreadGame(null);
 	}
 
 	/**
@@ -252,4 +290,52 @@ public class Main extends Application
 	{
 		this.game.setStackCardsNode(stackCardsNode);
 	}
+
+	/**
+	 * Método que permite obtener la lista de llaves de los nodos
+	 * @return
+	 */
+	public ArrayList<Integer> getNodesKey()
+	{
+		return this.game.getNodesKey();
+	}
+
+	/**
+	 * Método que permite iniciar el hilo del juego
+	 */
+	public void startThreadGame(Player player)
+	{
+		this.threadGame = new ThreadGame("ThreadGame", this, player);
+		Platform.runLater(this.threadGame);
+	}
+
+	/**
+	 * Método que permite obtener el jugador
+	 * @return
+	 */
+	public Player getFirstPlayer()
+	{
+		return this.game.getPlayers().getLastPlayer().getNextPlayer();
+	}
+
+	/**
+	 * Método que permite obtener el siguiente jugador
+	 * @param currentPlayer
+	 */
+	public Player nextPlayer(Player currentPlayer)
+	{
+		return currentPlayer.getNextPlayer();
+	}
+
+	/**
+	 * Método que permite asignar un semáforo
+	 * @param node
+	 */
+	public void addTrafficNode(int node)
+	{
+		NodeCoordinate currentNode = this.game.getStackCardsNode().searchNode(node);
+
+		playTableController.drawTafficNode(currentNode);
+	}
+
 }

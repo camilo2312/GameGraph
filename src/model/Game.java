@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 
 public class Game
 {
@@ -106,6 +107,25 @@ public class Game
 	public NodeCoordinate getHeadCardNode()
 	{
 		return this.stackCardsNode.getHeadCard();
+	}
+
+	/**
+	 * Método que permite obtener la lista de llaves de los nodos
+	 * @return
+	 */
+	public ArrayList<Integer> getNodesKey()
+	{
+		ArrayList<Integer> lstNodesKey = new ArrayList<>();
+		NodeCoordinate node = this.stackCardsNode.getHeadCard();
+
+		while(node != null)
+		{
+			lstNodesKey.add(node.getNode());
+
+			node = node.getNextNode();
+		}
+
+		return lstNodesKey;
 	}
 
 }

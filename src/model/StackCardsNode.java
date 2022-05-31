@@ -6,6 +6,20 @@ public class StackCardsNode
 
 	public StackCardsNode(){}
 
+	public NodeCoordinate getHeadCard()
+	{
+		return headCard;
+	}
+
+	public void setHeadCard(NodeCoordinate headCard)
+	{
+		this.headCard = headCard;
+	}
+
+	/**
+	 * Método que permite insertar un nodo o carta en la pila
+	 * @param node
+	 */
 	public void insertCard(NodeCoordinate node)
 	{
 		if (headCard == null)
@@ -23,14 +37,20 @@ public class StackCardsNode
         }
 	}
 
-	public NodeCoordinate getHeadCard()
+	public NodeCoordinate searchNode(int node)
 	{
-		return headCard;
+		NodeCoordinate currentNode = headCard;
+
+        while(currentNode.getNextNode() != null) {
+        	if (currentNode.getNode() == node)
+        	{
+        		return currentNode;
+        	}
+            currentNode = currentNode.getNextNode();
+        }
+
+        return null;
 	}
 
-	public void setHeadCard(NodeCoordinate headCard)
-	{
-		this.headCard = headCard;
-	}
 
 }
