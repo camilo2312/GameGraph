@@ -53,7 +53,7 @@ public class Player
 		this.nextPlayer = nextPlayer;
 	}
 
-	public boolean isHuman()
+	public boolean getIsHuman()
 	{
 		return isHuman;
 	}

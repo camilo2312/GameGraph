@@ -21,12 +21,14 @@ public class ThreadGame extends Thread
 		try
 		{
 			Thread.sleep(2000);
-			if (player == null)
+			if (player.getIsHuman())
 			{
-				this.player = this.main.getFirstPlayer();
+				this.main.viewAddTrafficLights(player);
 			}
-
-			this.main.viewAddTrafficLights(player);
+			else
+			{
+				this.main.viewWindowLoading(player);
+			}
 			this.interrupt();
 		}
 		catch (Exception e)

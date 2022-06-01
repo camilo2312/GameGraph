@@ -71,21 +71,7 @@ public class ShowGraphController implements Initializable
 			}
 		}
 
-//		for(HashMap.Entry<String, NodoGrafo<Vendedor>> entry: grafoVendedor.entrySet()) {
-//
-//			v = entry.getValue().getInfo();
-//			Node nodo = grafo.addNode(v.getNombre());
-//			nodo.setAttribute("ui.label",v.getNombre());
-//
-//
-//		}
-//
-//		for(HashMap.Entry<String, NodoGrafo<Vendedor>> entry: grafoVendedor.entrySet()) {
-//
-//			v = entry.getValue().getInfo();
-//			agregarConexiones(v);
-//
-//		}
+
 	}
 
 	private void getGraph()

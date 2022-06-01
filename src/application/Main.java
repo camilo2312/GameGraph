@@ -9,6 +9,7 @@ import controller.DiceController;
 import controller.GameCardsController;
 import controller.PlayTableController;
 import controller.ShowGraphController;
+import controller.TraffictLightsInternalPlayerController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +28,7 @@ import javafx.scene.layout.AnchorPane;
 public class Main extends Application
 {
 	private Stage primaryStage;
-	private Stage stage2;
+	private Stage secondStage;
 	private Game game = new Game("Simulador Vial");
 	private ThreadGame threadGame;
 	private PlayTableController playTableController;
@@ -53,6 +54,35 @@ public class Main extends Application
 		}
 		launch(args);
 	}
+
+	/**
+	 * Método que permite abrir la ventana de carga
+	 */
+	public void viewWindowLoading(Player player)
+	{
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("../view/TraffictLightsInternalPlayerView.fxml"));
+			Parent rootLayout = (AnchorPane) loader.load();
+
+			TraffictLightsInternalPlayerController traffictLightsInternalPlayerController = loader.getController();
+			traffictLightsInternalPlayerController.setMain(this, player);
+
+			Scene scene = new Scene(rootLayout);
+			secondStage = new Stage();
+			secondStage.setResizable(false);
+			secondStage.centerOnScreen();
+			secondStage.setScene(scene);
+			secondStage.show();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * Método que permite mostrar la ventana de ingresar jugadores
@@ -185,11 +215,11 @@ public class Main extends Application
 			addTrafficLightsController.setMain(this, player);
 
 			Scene scene = new Scene(rootLayout);
-			stage2 = new Stage();
-			stage2.setResizable(false);
-			stage2.centerOnScreen();
-			stage2.setScene(scene);
-			stage2.show();
+			Stage stage = new Stage();
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.setScene(scene);
+			stage.show();
 
 		}
 		catch (IOException e)
@@ -206,7 +236,7 @@ public class Main extends Application
 	{
 		viewWindowPlay();
 		viewWindowDice();
-		startThreadGame(null);
+		startThreadGame(getFirstPlayer());
 	}
 
 	/**
@@ -224,9 +254,9 @@ public class Main extends Application
 	 * Método que permite agregar un jugador
 	 * @param playerName
 	 */
-	public void addPlayer(String playerName, int idPlayer)
+	public void addPlayer(String playerName, int idPlayer, boolean isHuman)
 	{
-		game.addPlayer(playerName, idPlayer);
+		game.addPlayer(playerName, idPlayer, isHuman);
 	}
 
 	/**
@@ -311,20 +341,11 @@ public class Main extends Application
 
 	/**
 	 * Método que permite obtener el jugador
-	 * @return
+	 * @return player
 	 */
 	public Player getFirstPlayer()
 	{
 		return this.game.getPlayers().getLastPlayer().getNextPlayer();
-	}
-
-	/**
-	 * Método que permite obtener el siguiente jugador
-	 * @param currentPlayer
-	 */
-	public Player nextPlayer(Player currentPlayer)
-	{
-		return currentPlayer.getNextPlayer();
 	}
 
 	/**
@@ -334,8 +355,13 @@ public class Main extends Application
 	public void addTrafficNode(int node)
 	{
 		NodeCoordinate currentNode = this.game.getStackCardsNode().searchNode(node);
-
+		currentNode.setTrafficLight(true);
 		playTableController.drawTafficNode(currentNode);
+	}
+
+	public void closeWindowInternalPlayer()
+	{
+		secondStage.close();
 	}
 
 }

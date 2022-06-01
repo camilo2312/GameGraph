@@ -52,5 +52,10 @@ public class StackCardsNode
         return null;
 	}
 
+	public void asignmentTraffictNode(int node)
+	{
+		searchNode(node).setTrafficLight(true);
+	}
+
 
 }

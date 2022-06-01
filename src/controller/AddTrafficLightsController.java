@@ -5,9 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Player;
 
@@ -32,6 +34,9 @@ public class AddTrafficLightsController
     	addTrafficNode();
     }
 
+    /**
+     * Método que permite asignar un semáforo
+     */
     private void addTrafficNode()
     {
     	if (comboBoxNodes.getValue() != null)
@@ -39,8 +44,19 @@ public class AddTrafficLightsController
     		close();
         	int node = comboBoxNodes.getValue();
         	this.main.addTrafficNode(node);
-        	this.currentPlayer = this.main.nextPlayer(this.currentPlayer);
-        	this.main.startThreadGame(this.currentPlayer);
+        	this.currentPlayer = this.currentPlayer.getNextPlayer();
+        	if (this.currentPlayer != this.main.getFirstPlayer())
+        	{
+        		this.main.startThreadGame(this.currentPlayer);
+        	}
+        	else
+        	{
+        		this.currentPlayer = null;
+        	}
+    	}
+    	else
+    	{
+    		showMessage("Error", "Valor nulo", "No se ha seleccionado una ciudad", AlertType.ERROR);
     	}
     }
 
@@ -75,5 +91,22 @@ public class AddTrafficLightsController
     	Stage currentStage = (Stage) this.btnAdd.getScene().getWindow();
 		currentStage.close();
     }
+
+    /**
+	 * Método que permite mostrar un mensaje en pantalla
+	 *
+	 * @param titulo
+	 * @param encabezado
+	 * @param mensaje
+	 * @param alertType
+	 */
+	private void showMessage(String title, String header, String message, AlertType alertType)
+	{
+		Alert alert = new Alert(alertType);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 
 }

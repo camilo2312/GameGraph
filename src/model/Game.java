@@ -15,7 +15,7 @@ public class Game
 		this.graph = new Graph();
 		lstPlayers = new PlayersList();
 		setStackCardsNode(new StackCardsNode());
-		addPlayer("Maquina", 1);
+		addPlayer("Maquina", 1, false);
 	}
 
 	public String getGameName()
@@ -54,12 +54,13 @@ public class Game
 	 * Método que permite ingresar un nuevo jugador
 	 * @param playerName nombre del jugador
 	 */
-	public void addPlayer(String playerName, int idPlayer)
+	public void addPlayer(String playerName, int idPlayer, boolean isHuman)
 	{
 		Player player = new Player();
 		player.setUserName(playerName);
 		player.setId(idPlayer);
 		player.setPoints(0);
+		player.setHuman(isHuman);
 
 		lstPlayers.insertPlayer(player);
 	}
@@ -120,8 +121,10 @@ public class Game
 
 		while(node != null)
 		{
-			lstNodesKey.add(node.getNode());
-
+			if (!node.isTrafficLight())
+			{
+				lstNodesKey.add(node.getNode());
+			}
 			node = node.getNextNode();
 		}
 

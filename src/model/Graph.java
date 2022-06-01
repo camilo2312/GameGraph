@@ -216,6 +216,22 @@ public class Graph
 		this.adjacencyMatix[39][30] = 1;
 	}
 
+	public void addWeightNode(int node)
+	{
+		int currentValue = 0;
+		for (int i = 0; i < matrix.length; i++)
+		{
+			for (int j = 0; j < matrix[i].length; j++)
+			{
+				if (j == node && matrix[i][j] != 0)
+				{
+					currentValue = matrix[i][j];
+					matrix[i][j] = currentValue + 2;
+				}
+			}
+		}
+	}
+
 //	public List<Vertice<T>> rutaMasCorta(Vertice<T> origen, Vertice<T> destino) {
 //        resetMinDistanceEnVertices();
 //        calcularCaminos(origen);

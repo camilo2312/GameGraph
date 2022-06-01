@@ -61,7 +61,7 @@ public class AddPlayersController implements Initializable
     	{
     		if (totalPlayers != 5)
     		{
-    			main.addPlayer(playerName, idPlayer);
+    			main.addPlayer(playerName, idPlayer, true);
         		lblPlayers.setText("Ingresados: " + (totalPlayers = totalPlayers + 1));
         		txtPlayerName.setText("");
         		idPlayer = idPlayer + 1;
@@ -88,6 +88,14 @@ public class AddPlayersController implements Initializable
      */
     private void startGame()
     {
+    	int missingPlayers = 5 - totalPlayers;
+
+    	for (int i = 0; i < missingPlayers; i++)
+    	{
+    		main.addPlayer("Jugador " + idPlayer, idPlayer, false);
+    		idPlayer = idPlayer + 1;
+		}
+
     	main.viewWindowsGame();
     }
 
@@ -108,6 +116,11 @@ public class AddPlayersController implements Initializable
 		alert.showAndWait();
 	}
 
+	/**
+	 * Método que permite asignar la instancia de clase principal
+	 * en el controler
+	 * @param main
+	 */
     public void setMain(Main main)
     {
     	this.main = main;
