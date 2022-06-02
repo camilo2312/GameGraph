@@ -7,6 +7,7 @@ public class Player
 	private int points;
 	private boolean isHuman;
 	private Player nextPlayer;
+	private NodeCoordinate mision;
 
 	public Player()
 	{
@@ -61,6 +62,16 @@ public class Player
 	public void setHuman(boolean isHuman)
 	{
 		this.isHuman = isHuman;
+	}
+
+	public NodeCoordinate getMision()
+	{
+		return mision;
+	}
+
+	public void setMision(NodeCoordinate mision)
+	{
+		this.mision = mision;
 	}
 
 

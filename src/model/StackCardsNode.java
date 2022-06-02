@@ -30,18 +30,25 @@ public class StackCardsNode
         {
             NodeCoordinate currentNode = headCard;
 
-            while(currentNode.getNextNode() != null) {
+            while(currentNode.getNextNode() != null)
+            {
                 currentNode = currentNode.getNextNode();
             }
             currentNode.setNextNode(node);
         }
 	}
 
+	/**
+	 * Método que permite buscar un nodo en especifico
+	 * @param node indice del nodo
+	 * @return currentNode
+	 */
 	public NodeCoordinate searchNode(int node)
 	{
 		NodeCoordinate currentNode = headCard;
 
-        while(currentNode.getNextNode() != null) {
+        while(currentNode.getNextNode() != null)
+        {
         	if (currentNode.getNode() == node)
         	{
         		return currentNode;
@@ -52,10 +59,29 @@ public class StackCardsNode
         return null;
 	}
 
-	public void asignmentTraffictNode(int node)
-	{
-		searchNode(node).setTrafficLight(true);
-	}
-
+	/**
+	 * Método que permite obtener una carta
+	 * @return node
+	 */
+//	public NodeCoordinate getCard()
+//	{
+//        NodeCoordinate previous = null;
+//        NodeCoordinate current = headCard;
+//
+//        if (headCard != null && headCard.getNextNode() == null)
+//        {
+//        	headCard = null;
+//            return current;
+//        }
+//
+//        while(current.getNextNode() != null)
+//        {
+//        	previous = current;
+//        	current = current.getNextNode();
+//        }
+//        previous.setNextNode(null);
+//
+//        return current;
+//    }
 
 }

@@ -216,6 +216,10 @@ public class Graph
 		this.adjacencyMatix[39][30] = 1;
 	}
 
+	/**
+	 * Método que permite asignar peso de +2 a los arcos incidentes
+	 * @param node indice del nodo
+	 */
 	public void addWeightNode(int node)
 	{
 		int currentValue = 0;

@@ -7,16 +7,21 @@ import application.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.NodeCoordinate;
+import model.Player;
 
 public class GameCardsController implements Initializable
 {
 	private Main main;
 	private NodeCoordinate currentNode;
+	private Player currentPlayer;
 
 	@FXML
     private Label lblTitleCard;
@@ -37,27 +42,24 @@ public class GameCardsController implements Initializable
     private Button btnNextCard;
 
     @FXML
+    private Button btnTakeMision;
+
+    @FXML
     void nextCardAction(ActionEvent event)
     {
     	nextCardNode();
     }
 
+    @FXML
+    void takeMisionAction(ActionEvent event)
+    {
+    	takeMision();
+    }
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1)
 	{
-		this.lblTitleCard.setText("Misión");;
 		this.anchorPaneFourStar.setVisible(false);
-	}
-
-	/**
-	 * Método que permite obtener el nodo cabeza
-	 */
-	private void getHeadCardNode()
-	{
-		currentNode = main.getHeadCardNode();
-
-		setValuesLabel();
-
 	}
 
 	/**
@@ -66,11 +68,6 @@ public class GameCardsController implements Initializable
 	private void nextCardNode()
 	{
 		currentNode = currentNode.getNextNode();
-		if (currentNode == null)
-		{
-			currentNode = this.main.getHeadCardNode();
-		}
-
 		setValuesLabel();
 	}
 
@@ -110,16 +107,78 @@ public class GameCardsController implements Initializable
 				break;
 		}
 
+		if (currentNode.isItsMision())
+		{
+			this.btnTakeMision.setDisable(true);
+		}
+		else
+		{
+			this.btnTakeMision.setDisable(false);
+		}
+
 		this.anchorPaneFourStar.setVisible(currentNode.getReward() == 4);
+	}
+
+	/**
+	 * Método que permite elegir una misión
+	 */
+	private void takeMision()
+	{
+		if (this.currentNode != null)
+		{
+			close();
+			if (this.main.assignmentMisionToPlayer(this.currentNode, this.currentPlayer.getId()))
+			{
+				this.showMessage("Éxito", "Asignación de misión", "Misión asignada correctamente", AlertType.INFORMATION);
+				this.currentPlayer = this.currentPlayer.getNextPlayer();
+				if (this.currentPlayer != this.main.getFirstPlayer())
+	        	{
+	        		this.main.startThreadTakeMision(this.currentPlayer);
+	        	}
+			}
+			else
+			{
+				this.showMessage("Error", "Asignación de misión", "No se pudo asignar la misión", AlertType.ERROR);
+			}
+		}
+	}
+
+	 /**
+     * Método que permite cerrar la ventanas
+     */
+    private void close()
+    {
+    	Stage currentStage = (Stage) this.btnTakeMision.getScene().getWindow();
+		currentStage.close();
+    }
+
+	/**
+	 * Método que permite mostrar un mensaje en pantalla
+	 *
+	 * @param titulo
+	 * @param encabezado
+	 * @param mensaje
+	 * @param alertType
+	 */
+	private void showMessage(String title, String header, String message, AlertType alertType)
+	{
+		Alert alert = new Alert(alertType);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
 	/**
 	 * Método que permite asignar la clase principal al controller
 	 * @param main
 	 */
-	public void setMain(Main main)
+	public void setMain(Main main, Player player)
 	{
 		this.main = main;
-		this.getHeadCardNode();
+		this.currentPlayer = player;
+		this.currentNode = this.main.getHeadCard();
+		setValuesLabel();
+		this.lblTitleCard.setText("¡Selecciona tú misión " + player.getUserName() + "!");
 	}
 }

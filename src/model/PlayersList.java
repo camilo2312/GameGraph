@@ -32,4 +32,28 @@ public class PlayersList
 	    }
 	    lastPlayer = player;
 	}
+
+	/**
+	 * Método que permite buscar un jugador
+	 * @param idPlayer
+	 * @return player
+	 */
+	public Player searchPlayer(int idPlayer)
+	{
+		if (lastPlayer != null)
+		{
+			Player playerAux = lastPlayer;
+			while(playerAux != null)
+			{
+				if (playerAux.getId() == idPlayer)
+				{
+					return playerAux;
+				}
+
+				playerAux = playerAux.getNextPlayer();
+			}
+		}
+
+		return null;
+	}
 }

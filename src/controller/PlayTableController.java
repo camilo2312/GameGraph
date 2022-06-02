@@ -338,9 +338,12 @@ public class PlayTableController implements Initializable
 		this.initializeNamePlayers();
 
 		this.main.addCardNodesToGame(this.stackCardsNode);
-		this.main.viewWindowCards();
 	}
 
+	/**
+	 * Método que permite asignar un semáforo
+	 * @param currentNode
+	 */
 	public void drawTafficNode(NodeCoordinate currentNode)
 	{
 		this.gc.setFill(Color.RED);

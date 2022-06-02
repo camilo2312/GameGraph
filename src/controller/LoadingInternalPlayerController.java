@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.Main;
+import enums.Rounds;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -17,10 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import model.NodeCoordinate;
 import model.Player;
 import threads.ThreadInternalPlayer;
 
-public class TraffictLightsInternalPlayerController implements Initializable
+public class LoadingInternalPlayerController implements Initializable
 {
 	private Main main;
 	private ArrayList<Integer> lstNodes;
@@ -28,6 +30,9 @@ public class TraffictLightsInternalPlayerController implements Initializable
 
     @FXML
     private Label lblPlayerTurn;
+
+    @FXML
+    private Label lblDescription;
 
     @FXML
     private ImageView imageViewGif;
@@ -49,26 +54,51 @@ public class TraffictLightsInternalPlayerController implements Initializable
 	 * controller
 	 * @param main aplicación principal
 	 */
-	public void setMain(Main main, Player player)
+	public void setMain(Main main, Player player, Rounds round)
 	{
 		this.main = main;
 		lblPlayerTurn.setText("¡Es turno de " + player.getUserName() + "!");
 		lstNodes = this.main.getNodesKey();
 
-		new Timer().schedule(new TimerTask() {
+		switch (round) {
+		case PRIMERA_RONDA:
+			lblDescription.setText("Eligiendo ciudad al azar");
+			break;
+		case SEGUNDA_RONDA:
+			lblDescription.setText("Eligiendo una misión al azar");
+			break;
+		default:
+			break;
+		}
+
+		new Timer().schedule(new TimerTask()
+		{
 			@Override
 			public void run()
 			{
-				addTrafficNode(player);
+				Random random = new Random();
+				int node = lstNodes.get(random.nextInt(lstNodes.size()));
+
+				switch (round) {
+				case PRIMERA_RONDA:
+					addTrafficNode(player, node);
+					break;
+				case SEGUNDA_RONDA:
+					takeMisionPlayer(player, node);
+					break;
+				default:
+					break;
+				}
 			}
 		}, 4000);
 	}
 
-	private void addTrafficNode(Player player)
+	/**
+	 * Método que permite asignar un semáforo a un nodo
+	 * @param player
+	 */
+	private void addTrafficNode(Player player, int node)
 	{
-		Random random = new Random();
-		int node = lstNodes.get(random.nextInt(lstNodes.size()));
-
 		this.main.addTrafficNode(node);
 
 		player = player.getNextPlayer();
@@ -78,6 +108,30 @@ public class TraffictLightsInternalPlayerController implements Initializable
     	if (player != this.main.getFirstPlayer())
     	{
     		this.main.startThreadGame(player);
+    	}
+    	else
+    	{
+    		this.main.startThreadTakeMision(player);
+    	}
+	}
+
+	/**
+	 * Método que permite asignar una misión al jugador
+	 * @param player
+	 */
+	private void takeMisionPlayer(Player player, int idNode)
+	{
+		NodeCoordinate node = this.main.getNodeByKey(idNode);
+
+		this.main.assignmentMisionToPlayer(node, player.getId());
+
+		player = player.getNextPlayer();
+
+		this.threadInternalPlayer = new ThreadInternalPlayer("Thread internal player", this.main);
+		Platform.runLater(threadInternalPlayer);
+    	if (player != this.main.getFirstPlayer())
+    	{
+    		this.main.startThreadTakeMision(player);
     	}
 	}
 }

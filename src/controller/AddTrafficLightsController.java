@@ -51,7 +51,7 @@ public class AddTrafficLightsController
         	}
         	else
         	{
-        		this.currentPlayer = null;
+        		this.main.startThreadTakeMision(this.currentPlayer);
         	}
     	}
     	else

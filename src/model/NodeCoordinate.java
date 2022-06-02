@@ -9,6 +9,7 @@ public class NodeCoordinate
 	private int reward;
 	private NodeCoordinate nextNode;
 	private boolean isTrafficLight;
+	private boolean itsMision;
 
 	public NodeCoordinate() {}
 
@@ -78,6 +79,14 @@ public class NodeCoordinate
 
 	public void setTrafficLight(boolean isTrafficLight) {
 		this.isTrafficLight = isTrafficLight;
+	}
+
+	public boolean isItsMision() {
+		return itsMision;
+	}
+
+	public void setItsMision(boolean itsMision) {
+		this.itsMision = itsMision;
 	}
 
 

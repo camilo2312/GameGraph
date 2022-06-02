@@ -105,10 +105,10 @@ public class Game
 	 * Método que permite obtener la carta siguiente
 	 * @return node
 	 */
-	public NodeCoordinate getHeadCardNode()
-	{
-		return this.stackCardsNode.getHeadCard();
-	}
+//	public NodeCoordinate getNextCardNode()
+//	{
+//		return this.stackCardsNode.getCard();
+//	}
 
 	/**
 	 * Método que permite obtener la lista de llaves de los nodos
@@ -129,6 +129,85 @@ public class Game
 		}
 
 		return lstNodesKey;
+	}
+
+	/**
+	 * Método que permite asignar un peso en el nodo
+	 * @param node
+	 */
+	public void addWeightNode(int node)
+	{
+		this.graph.addWeightNode(node);
+	}
+
+	/**
+	 * Método que permite asignar un semáforo al nodo
+	 * @param node indice del nodo
+	 * @return currentNode
+	 */
+	public NodeCoordinate addTrafficNode(int node)
+	{
+		NodeCoordinate currentNode = this.stackCardsNode.searchNode(node);
+
+		if (currentNode != null)
+		{
+			currentNode.setTrafficLight(true);
+			this.graph.addWeightNode(node);
+		}
+
+		return currentNode;
+	}
+
+	/**
+	 * Método que permite asignar una misión a un jugador
+	 * @param currentNode nodo o carta elegida
+	 * @param idPlayer id del jugador
+	 * @return isAssignment
+	 */
+	public boolean assignmentMisionToPlayer(NodeCoordinate currentNode, int idPlayer)
+	{
+		boolean isAssignment = false;
+
+		Player player = this.lstPlayers.searchPlayer(idPlayer);
+
+		if (player != null)
+		{
+			stackCardsNode.searchNode(currentNode.getNode()).setItsMision(true);
+			player.setMision(currentNode);
+			isAssignment = true;
+		}
+
+		return isAssignment;
+	}
+
+	/**
+	 * Método que permite elegir un nodo al azar
+	 * @return nodo o carta elegida
+	 */
+	public NodeCoordinate getNodeByKey(int idNode)
+	{
+		NodeCoordinate nodeAux = stackCardsNode.getHeadCard();
+
+		while(nodeAux != null)
+		{
+			if (nodeAux.getNode() == idNode)
+			{
+				return nodeAux;
+			}
+
+			nodeAux = nodeAux.getNextNode();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Método que permite tomar la carta cabeza
+	 * @return lastCard
+	 */
+	public NodeCoordinate getHeadCard()
+	{
+		return stackCardsNode.getHeadCard();
 	}
 
 }
