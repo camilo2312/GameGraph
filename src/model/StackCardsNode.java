@@ -63,25 +63,28 @@ public class StackCardsNode
 	 * Método que permite obtener una carta
 	 * @return node
 	 */
-//	public NodeCoordinate getCard()
-//	{
-//        NodeCoordinate previous = null;
-//        NodeCoordinate current = headCard;
-//
-//        if (headCard != null && headCard.getNextNode() == null)
-//        {
-//        	headCard = null;
-//            return current;
-//        }
-//
-//        while(current.getNextNode() != null)
-//        {
-//        	previous = current;
-//        	current = current.getNextNode();
-//        }
-//        previous.setNextNode(null);
-//
-//        return current;
-//    }
+	public NodeCoordinate getCard()
+	{
+        NodeCoordinate previous = null;
+        NodeCoordinate current = headCard;
+
+        if (headCard != null && headCard.getNextNode() == null)
+        {
+        	headCard = null;
+            return current;
+        }
+
+        while(current.getNextNode() != null)
+        {
+        	previous = current;
+        	current = current.getNextNode();
+        }
+        previous.setNextNode(null);
+
+        current.setNextNode(headCard);
+        headCard = current;
+
+        return current;
+    }
 
 }

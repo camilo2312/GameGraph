@@ -1,5 +1,8 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -78,7 +81,10 @@ public class AddTrafficLightsController
      */
     public ObservableList<Integer> loadComboBox()
     {
-    	this.lstNodesData.addAll(this.main.getNodesKey());
+    	ArrayList<Integer> keys = this.main.getNodesKey();
+    	Collections.sort(keys);
+
+    	this.lstNodesData.addAll(keys);
 
     	return lstNodesData;
     }

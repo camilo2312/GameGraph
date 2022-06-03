@@ -10,14 +10,14 @@
    <children>
       <AnchorPane prefHeight="33.0" prefWidth="256.0" style="-fx-background-color: red;">
          <children>
-            <Label fx:id="lblPlayerTurn" layoutX="47.0" layoutY="7.0" text="¡Es turno de !" textFill="WHITE">
+            <Label fx:id="lblPlayerTurn" alignment="CENTER" layoutY="7.0" prefHeight="20.0" prefWidth="256.0" text="¡Es turno de !" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="16.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="8.0" layoutY="44.0" text="Elige una ciudad y ponle un semáforo">
+      <Label alignment="CENTER" layoutY="44.0" prefHeight="16.0" prefWidth="256.0" text="Elige una ciudad y ponle un semáforo">
          <font>
             <Font name="Century Gothic" size="13.0" />
          </font>

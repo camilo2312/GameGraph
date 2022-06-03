@@ -67,7 +67,7 @@ public class GameCardsController implements Initializable
 	 */
 	private void nextCardNode()
 	{
-		currentNode = currentNode.getNextNode();
+		currentNode = this.main.getCard();
 		setValuesLabel();
 	}
 
@@ -107,7 +107,7 @@ public class GameCardsController implements Initializable
 				break;
 		}
 
-		if (currentNode.isItsMision())
+		if (currentNode.isItsMision() || !diferentPosition(currentNode.getNode()))
 		{
 			this.btnTakeMision.setDisable(true);
 		}
@@ -117,6 +117,17 @@ public class GameCardsController implements Initializable
 		}
 
 		this.anchorPaneFourStar.setVisible(currentNode.getReward() == 4);
+	}
+
+	/**
+	 * Método que permite escoger un nodo diferente al
+	 * de los jugadores
+	 * @param node
+	 * @return
+	 */
+	private boolean diferentPosition(int node)
+	{
+		return this.main.diferentPosition(node);
 	}
 
 	/**

@@ -76,8 +76,7 @@ public class LoadingInternalPlayerController implements Initializable
 			@Override
 			public void run()
 			{
-				Random random = new Random();
-				int node = lstNodes.get(random.nextInt(lstNodes.size()));
+				int node = getRandomNode();
 
 				switch (round) {
 				case PRIMERA_RONDA:
@@ -91,6 +90,34 @@ public class LoadingInternalPlayerController implements Initializable
 				}
 			}
 		}, 4000);
+	}
+
+	/**
+	 * Método que permite obtener un nodo random
+	 * @return
+	 */
+	private int getRandomNode()
+	{
+		Random random = new Random();
+		int node = 0;
+		do
+		{
+			node = lstNodes.get(random.nextInt(lstNodes.size()));
+
+		} while(diferentPosition(node) == false);
+
+		return node;
+	}
+
+	/**
+	 * Método que permite validar si el nodo
+	 * es deferente al de la posición de los jugadores
+	 * @param node
+	 * @return
+	 */
+	private boolean diferentPosition(int node)
+	{
+		return main.diferentPosition(node);
 	}
 
 	/**

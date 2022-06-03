@@ -1,6 +1,8 @@
 package controller;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import application.Main;
@@ -11,17 +13,19 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.NodeCoordinate;
 import model.Player;
 import model.PlayersList;
-import model.StackCardsNode;
 
 public class PlayTableController implements Initializable
 {
 	private Main main;
-	private StackCardsNode stackCardsNode = new StackCardsNode();
 	private PlayersList lstPlayers;
+	private ArrayList<NodeCoordinate> lstNodes = new ArrayList<>();
 	private int keyNode = 0;
 
 	@FXML
@@ -82,27 +86,28 @@ public class PlayTableController implements Initializable
 
 			do
 			{
-				switch (playerAux.getId()) {
-				case 1:
-					lblPlayer1.setText(playerAux.getUserName());
-					break;
-				case 2:
-					lblPlayer2.setText(playerAux.getUserName());
-					break;
-				case 3:
-					lblPlayer3.setText(playerAux.getUserName());
-					break;
-				case 4:
-					lblPlayer4.setText(playerAux.getUserName());
-					break;
-				case 5:
-					lblPlayer5.setText(playerAux.getUserName());
-					break;
-				case 6:
-					lblPlayer6.setText(playerAux.getUserName());
-					break;
-				default:
-					break;
+				switch (playerAux.getId())
+				{
+					case 1:
+						lblPlayer1.setText(playerAux.getUserName());
+						break;
+					case 2:
+						lblPlayer2.setText(playerAux.getUserName());
+						break;
+					case 3:
+						lblPlayer3.setText(playerAux.getUserName());
+						break;
+					case 4:
+						lblPlayer4.setText(playerAux.getUserName());
+						break;
+					case 5:
+						lblPlayer5.setText(playerAux.getUserName());
+						break;
+					case 6:
+						lblPlayer6.setText(playerAux.getUserName());
+						break;
+					default:
+						break;
 				}
 
 				playerAux = playerAux.getNextPlayer();
@@ -224,36 +229,16 @@ public class PlayTableController implements Initializable
 		double newPosY = posY - 5;
 		boolean isNew = true;
 
-		if (this.stackCardsNode.getHeadCard() != null)
+		for (NodeCoordinate nodeAux : lstNodes)
 		{
-			NodeCoordinate nodeAux = this.stackCardsNode.getHeadCard();
-
-			do
+			if ((int)nodeAux.getPosX() == (int)newPosX && (int)nodeAux.getPosY() == (int)newPosY)
 			{
-				if ((int)nodeAux.getPosX() == (int)newPosX && (int)nodeAux.getPosY() == (int)newPosY)
-				{
-					isNew = false;
-					break;
-				}
-
-				nodeAux = nodeAux.getNextNode();
-            }
-            while(nodeAux != null);
-
-			if (isNew)
-			{
-				NodeCoordinate node = new NodeCoordinate();
-				node.setPosX(newPosX);
-				node.setPosY(newPosY);
-				node.setNode(keyNode);
-				node.setZone(zone);
-				node.setReward(reward);
-				node.setTrafficLight(isTrafficLight);
-				this.stackCardsNode.insertCard(node);
-		        keyNode++;
+				isNew = false;
+				break;
 			}
 		}
-		else
+
+		if (isNew)
 		{
 			NodeCoordinate node = new NodeCoordinate();
 			node.setPosX(newPosX);
@@ -262,7 +247,7 @@ public class PlayTableController implements Initializable
 			node.setZone(zone);
 			node.setReward(reward);
 			node.setTrafficLight(isTrafficLight);
-			this.stackCardsNode.insertCard(node);
+			lstNodes.add(node);
 	        keyNode++;
 		}
 	}
@@ -272,20 +257,40 @@ public class PlayTableController implements Initializable
 	 */
 	private void drawNodes()
 	{
-		NodeCoordinate node = this.stackCardsNode.getHeadCard();
-
-		do
+		for (NodeCoordinate node : lstNodes)
 		{
 			this.gc.setFill(Color.BLACK);
 			this.gc.fillText("" + node.getNode(), node.getPosX(), node.getPosY() - 6);
-			this.gc.setFill(Color.GRAY);
+
+			switch (node.getNode()) {
+			case 6:
+				this.gc.setFill(Color.VIOLET);
+				break;
+			case 17:
+				this.gc.setFill(Color.BLUE);
+				break;
+			case 22:
+				this.gc.setFill(Color.GREEN);
+				break;
+			case 27:
+				this.gc.setFill(Color.YELLOW);
+				break;
+			case 32:
+				this.gc.setFill(Color.ORANGERED);
+				break;
+			case 37:
+				this.gc.setFill(Color.rgb(136, 6, 6));
+				break;
+			default:
+				break;
+			}
+
 			this.gc.fillOval(node.getPosX(), node.getPosY(), 12, 12);
 			this.gc.setLineWidth(3);
 			this.gc.strokeOval(node.getPosX(), node.getPosY(), 12, 12);
+		}
 
-			node = node.getNextNode();
-        } while(node != null);
-
+		Collections.shuffle(lstNodes);
 	}
 	/**
 	 * Método que permite asignar el color de relleno por poligono
@@ -318,7 +323,7 @@ public class PlayTableController implements Initializable
 				this.gc.fill();
 				break;
 			case 5:
-				this.gc.setFill(Color.RED);
+				this.gc.setFill(Color.rgb(131, 6, 6));
 				this.gc.fill();
 				break;
 
@@ -337,7 +342,7 @@ public class PlayTableController implements Initializable
 		this.main = main;
 		this.initializeNamePlayers();
 
-		this.main.addCardNodesToGame(this.stackCardsNode);
+		this.main.addCardNodesToGame(this.lstNodes);
 	}
 
 	/**
@@ -348,6 +353,45 @@ public class PlayTableController implements Initializable
 	{
 		this.gc.setFill(Color.RED);
 		this.gc.fillOval(currentNode.getPosX(), currentNode.getPosY(), 12, 12);
+		this.gc.setLineWidth(3);
+		this.gc.strokeOval(currentNode.getPosX(), currentNode.getPosY(), 12, 12);
+	}
+
+	public void updateTextPlayer(int idNode, int idPlayer)
+	{
+		String message = "(Debes ir a la ciudad número " + idNode + ")";
+		Tooltip tooltip = new Tooltip();
+		Image img = new Image(getClass().getResourceAsStream("../images/star.png"));
+		ImageView imgView = new ImageView(img);
+
+		imgView.setFitWidth(14);
+		imgView.setFitHeight(14);
+
+		tooltip.setText(message);
+		tooltip.setGraphic(imgView);
+		switch (idPlayer)
+		{
+			case 1:
+				lblPlayer1.setTooltip(tooltip);
+				break;
+			case 2:
+				lblPlayer2.setTooltip(tooltip);
+				break;
+			case 3:
+				lblPlayer3.setTooltip(tooltip);
+				break;
+			case 4:
+				lblPlayer4.setTooltip(tooltip);
+				break;
+			case 5:
+				lblPlayer5.setTooltip(tooltip);
+				break;
+			case 6:
+				lblPlayer6.setTooltip(tooltip);
+				break;
+			default:
+				break;
+		}
 	}
 
 }

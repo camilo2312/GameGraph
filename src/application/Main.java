@@ -19,7 +19,7 @@ import model.Game;
 import model.NodeCoordinate;
 import model.Player;
 import model.PlayersList;
-import model.StackCardsNode;
+import threads.ThreadUpdateTooltipPlayer;
 import threads.ThreadTafficNode;
 import threads.ThreadTakeMisionPlayer;
 import javafx.scene.Parent;
@@ -319,9 +319,12 @@ public class Main extends Application
 	 * al juego
 	 * @param stackCardsNode
 	 */
-	public void addCardNodesToGame(StackCardsNode stackCardsNode)
+	public void addCardNodesToGame(ArrayList<NodeCoordinate> lstNodes)
 	{
-		this.game.setStackCardsNode(stackCardsNode);
+		for (NodeCoordinate nodeCoordinate : lstNodes)
+		{
+			this.game.getStackCardsNode().insertCard(nodeCoordinate);
+		}
 	}
 
 	/**
@@ -390,7 +393,16 @@ public class Main extends Application
 	 */
 	public boolean assignmentMisionToPlayer(NodeCoordinate currentNode, int idPlayer)
 	{
-		return this.game.assignmentMisionToPlayer(currentNode, idPlayer);
+		boolean result = this.game.assignmentMisionToPlayer(currentNode, idPlayer);
+
+		if (result)
+		{
+			ThreadUpdateTooltipPlayer thread = new ThreadUpdateTooltipPlayer(this, currentNode.getNode(), idPlayer);
+			Platform.runLater(thread);
+
+		}
+
+		return result;
 	}
 
 	/**
@@ -410,6 +422,37 @@ public class Main extends Application
 	public NodeCoordinate getHeadCard()
 	{
 		return this.game.getHeadCard();
+	}
+
+	/**
+	 * Método que valida si el nodo es una posición de
+	 * los jugadores
+	 * @param node
+	 * @return
+	 */
+	public boolean diferentPosition(int node)
+	{
+		return this.game.diferentPosition(node);
+	}
+
+	/**
+	 * Método que permite actualizar los tooltips de los jugadores
+	 * @param node nodo destino
+	 * @param player jugador
+	 */
+	public void updateTextPlayer(int node, int player)
+	{
+		this.playTableController.updateTextPlayer(node, player);
+
+	}
+
+	/**
+	 * Método que permite seleccionar una carta de la baraja
+	 * @return card
+	 */
+	public NodeCoordinate getCard()
+	{
+		return this.game.getStackCardsNode().getCard();
 	}
 
 }

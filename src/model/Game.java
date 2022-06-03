@@ -102,15 +102,6 @@ public class Game
 	}
 
 	/**
-	 * Método que permite obtener la carta siguiente
-	 * @return node
-	 */
-//	public NodeCoordinate getNextCardNode()
-//	{
-//		return this.stackCardsNode.getCard();
-//	}
-
-	/**
 	 * Método que permite obtener la lista de llaves de los nodos
 	 * @return
 	 */
@@ -121,7 +112,7 @@ public class Game
 
 		while(node != null)
 		{
-			if (!node.isTrafficLight())
+			if (!node.isTrafficLight() && diferentPosition(node.getNode()))
 			{
 				lstNodesKey.add(node.getNode());
 			}
@@ -129,6 +120,32 @@ public class Game
 		}
 
 		return lstNodesKey;
+	}
+
+	/**
+	 * Método que permite validar si la posición es diferente de los
+	 * nodos de los jugadores
+	 * @param node
+	 * @return
+	 */
+	public boolean diferentPosition(int node)
+	{
+		boolean isDiferent = true;
+		switch (node) {
+		case 6:
+		case 17:
+		case 22:
+		case 27:
+		case 32:
+		case 37:
+			isDiferent = false;
+			break;
+
+		default:
+			break;
+		}
+
+		return isDiferent;
 	}
 
 	/**
