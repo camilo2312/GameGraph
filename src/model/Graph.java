@@ -5,13 +5,20 @@ import java.util.ArrayList;
 public class Graph
 {
 	private int[][] matrix;
+	private int[][] matrixAux;
+	private int[][] roadMatrix;
 	private int[][] adjacencyMatix;
+	private final int CANT_NODES = 42;
 
 	public Graph()
 	{
-		matrix = new int[42][42];
-		adjacencyMatix = new int[42][42];
+		matrix = new int[CANT_NODES][CANT_NODES];
+		matrixAux = new int[CANT_NODES][CANT_NODES];
+		roadMatrix = new int[CANT_NODES][CANT_NODES];
+		adjacencyMatix = new int[CANT_NODES][CANT_NODES];
 		addItemMatrixs();
+
+
 	}
 
 	public int[][] getMatrix()
@@ -117,6 +124,7 @@ public class Graph
 		this.matrix[30][39] = 1;
 		this.matrix[39][30] = 1;
 
+
 		addItemsAdjacencyMatrix();
 	}
 
@@ -213,7 +221,6 @@ public class Graph
 
 		this.adjacencyMatix[30][39] = 1;
 		this.adjacencyMatix[39][30] = 1;
-
 	}
 
 	/**
@@ -270,51 +277,68 @@ public class Graph
 		return matrix[currentNode][nodeDestiny];
 	}
 
-//	public List<Vertice<T>> rutaMasCorta(Vertice<T> origen, Vertice<T> destino) {
-//        resetMinDistanceEnVertices();
-//        calcularCaminos(origen);
-//        return obtenerCaminoMasCorto(destino);
-//    }
-//
-//    private void resetMinDistanceEnVertices() {
-//        for (Vertice<T> vertice: vertices) {
-//            vertice.setMinDistance(Double.POSITIVE_INFINITY);
-//            vertice.setPrevio(null);
-//        }
-//    }
-//
-//    private void calcularCaminos(Vertice<T> source) {
-//        source.setMinDistance(0.0);
-//        PriorityQueue<Vertice<T>> vertexQueue = new PriorityQueue<>();
-//        vertexQueue.add(source);
-//
-//        while (!vertexQueue.isEmpty()) {
-//            Vertice<T> poll = vertexQueue.poll();
-//
-//            // Visit each edge exiting u
-//            for (Object element : poll.getArcos()) {
-//                Arco arco = (Arco) element;
-//                Vertice<T> v = arco.getDestino();
-//                double weight = arco.getPeso();
-//                double distanceThroughU = poll.getMinDistance() + weight;
-//                if (distanceThroughU < v.getMinDistance()) {
-//                    vertexQueue.remove(v);
-//
-//                    v.setMinDistance(distanceThroughU);
-//                    v.setPrevio(poll);
-//                    vertexQueue.add(v);
-//                }
-//            }
-//        }
-//    }
-//
-//    private List<Vertice<T>> obtenerCaminoMasCorto(Vertice<T> target) {
-//        List<Vertice<T>> path = new ArrayList<>();
-//        for (Vertice<T> vertex = target; vertex != null; vertex = vertex.getPrevio()) {
-//            path.add(vertex);
-//        }
-//
-//        Collections.reverse(path);
-//        return path;
-//    }
+	/**
+	 * Método que permite calcular la ruta más corta entre los nodos
+	 */
+	public void calcShortRoute() {
+
+		this.matrixAux = this.matrix;
+
+		for (int i = 0; i < matrixAux.length; i++) {
+			for (int j = 0; j < matrixAux[i].length; j++) {
+				if (matrixAux[i][j] == 0)
+				{
+					matrixAux[i][j] = 10000;
+				}
+			}
+		}
+
+		int i, j, k;
+		for (i = 0; i < this.CANT_NODES; i++)
+		{
+			for (j = 0; j < this.CANT_NODES; j++)
+			{
+				for (k = 0; k < this.CANT_NODES; k++)
+				{
+					if (this.matrixAux[i][k] + this.matrixAux[k][j] < this.matrixAux[i][j])
+					{
+						this.matrixAux[i][j] = this.matrixAux[i][k] + this.matrixAux[k][j];
+						this.roadMatrix[i][j] = k;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Método que permite obtener el peso minimo del camino
+	 * @param origin nodo origen
+	 * @param destiny nodo destino
+	 * @return weight
+	 */
+	public int getMinWeight(int origin, int destiny)
+	{
+		return this.matrixAux[origin][destiny];
+	}
+
+	/**
+	 * Método que permite encontrar el camino con los nodos que se deben
+	 * recorrer para llegar al destino
+	 * @param origin nodo origen
+	 * @param destiny nodo destino
+	 * @return route
+	 */
+	public String shortRoad(int origin, int destiny) {
+		String route;
+		if (origin == destiny)
+		{
+			route = "" + origin;
+		}
+		else
+		{
+			route = shortRoad(origin, this.roadMatrix[origin][destiny]) + ","
+					+ destiny;
+		}
+		return route;
+	}
 }
