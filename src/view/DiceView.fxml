@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="293.0" prefWidth="317.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DiceController">
+<AnchorPane prefHeight="379.0" prefWidth="317.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DiceController">
    <children>
       <AnchorPane prefHeight="33.0" prefWidth="317.0" style="-fx-background-color: #0975B8;">
          <children>
-            <Label layoutX="127.0" layoutY="2.0" text="Dado">
+            <Label fx:id="lblTitle" alignment="CENTER" layoutX="-1.0" layoutY="2.0" prefHeight="29.0" prefWidth="317.0" text="Tira los dados" textFill="WHITE">
                <font>
-                  <Font name="Century Gothic" size="23.0" />
+                  <Font name="Century Gothic" size="20.0" />
                </font>
             </Label>
          </children>
@@ -41,9 +41,29 @@
             <Font name="Century Gothic" size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="txtResult" alignment="CENTER_RIGHT" layoutX="106.0" layoutY="239.0" prefHeight="25.0" prefWidth="107.0">
+      <TextField fx:id="txtResult" alignment="CENTER_RIGHT" disable="true" layoutX="106.0" layoutY="239.0" prefHeight="25.0" prefWidth="107.0">
          <font>
-            <Font name="Century Gothic" size="12.0" />
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="btnDiscard" layoutX="10.0" layoutY="334.0" mnemonicParsing="false" onAction="#discardAction" style="-fx-background-color: linear-gradient(#69ACF4,#0F4176);" text="Descartar valor mayor" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnMove" layoutX="243.0" layoutY="334.0" mnemonicParsing="false" onAction="#moveAction" style="-fx-background-color: linear-gradient(#73F469, #19940F);" text="Mover" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="28.0" layoutY="284.0" text="Restante">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtCurrentResult" alignment="CENTER_RIGHT" disable="true" layoutX="105.0" layoutY="281.0" prefHeight="25.0" prefWidth="107.0">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
          </font>
       </TextField>
    </children>

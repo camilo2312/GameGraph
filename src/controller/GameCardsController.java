@@ -146,6 +146,10 @@ public class GameCardsController implements Initializable
 	        	{
 	        		this.main.startThreadTakeMision(this.currentPlayer);
 	        	}
+				else
+				{
+					this.main.startThreadDices(this.currentPlayer);
+				}
 			}
 			else
 			{

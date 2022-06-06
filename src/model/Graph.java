@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Graph
 {
 	private int[][] matrix;
@@ -106,11 +108,8 @@ public class Graph
 		this.matrix[15][18] = 1;
 		this.matrix[18][15] = 1;
 
-		this.matrix[4][19] = 1;
-		this.matrix[19][4] = 1;
-
-		this.matrix[20][24] = 1;
-		this.matrix[24][20] = 1;
+		this.matrix[20][29] = 1;
+		this.matrix[29][20] = 1;
 
 		this.matrix[25][34] = 1;
 		this.matrix[34][25] = 1;
@@ -214,6 +213,7 @@ public class Graph
 
 		this.adjacencyMatix[30][39] = 1;
 		this.adjacencyMatix[39][30] = 1;
+
 	}
 
 	/**
@@ -234,6 +234,40 @@ public class Graph
 				}
 			}
 		}
+	}
+
+	/**
+	 * Método que permite obtener los nodos incidentes sobre el nodo mandado
+	 * @param node identificador del nodo a encontrar los nodos incidentes
+	 * @return lstNodes
+	 */
+	public ArrayList<Integer> getNodesIncidents(int node)
+	{
+		ArrayList<Integer> lstNodes = new ArrayList<>();
+		for (int i = 0; i < adjacencyMatix.length; i++)
+		{
+			for (int j = 0; j < adjacencyMatix[i].length; j++)
+			{
+				if (i == node && adjacencyMatix[i][j] != 0)
+				{
+					lstNodes.add(j);
+				}
+			}
+		}
+
+		return lstNodes;
+
+	}
+
+	/**
+	 * Método que permite obtener el peso entre 2 nodos
+	 * @param currentNode
+	 * @param nodeDestiny
+	 * @return weight
+	 */
+	public int getWeightNodes(int currentNode, int nodeDestiny)
+	{
+		return matrix[currentNode][nodeDestiny];
 	}
 
 //	public List<Vertice<T>> rutaMasCorta(Vertice<T> origen, Vertice<T> destino) {

@@ -126,7 +126,7 @@ public class Game
 	 * Método que permite validar si la posición es diferente de los
 	 * nodos de los jugadores
 	 * @param node
-	 * @return
+	 * @return isDiferent
 	 */
 	public boolean diferentPosition(int node)
 	{
@@ -225,6 +225,41 @@ public class Game
 	public NodeCoordinate getHeadCard()
 	{
 		return stackCardsNode.getHeadCard();
+	}
+
+	/**
+	 * Método que permite obtener los nodos incidentes sobre otro
+	 * @param currentNode
+	 * @return lstNodes
+	 */
+	public ArrayList<Integer> getNodesIncidents(int currentNode)
+	{
+		return graph.getNodesIncidents(currentNode);
+	}
+
+	/**
+	 * Método que permite obtener el peso entre 2 nodos
+	 * @param currentNode
+	 * @param nodeDestiny
+	 * @return weight
+	 */
+	public int getWeightNodes(int currentNode, int nodeDestiny)
+	{
+		return this.graph.getWeightNodes(currentNode, nodeDestiny);
+	}
+
+	/**
+	 * Método que permite actualizar el nodo al que se mueve
+	 * el jugador
+	 * @param idPlayer identificador del jugador
+	 * @param nodeDestiny nodo destino
+	 */
+	public Player updateCurrentNodePlayer(int idPlayer, int nodeDestiny)
+	{
+		Player player = this.lstPlayers.searchPlayer(idPlayer);
+		player.setCurrentNode(nodeDestiny);
+
+		return player;
 	}
 
 }

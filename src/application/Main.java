@@ -8,6 +8,7 @@ import controller.AddTrafficLightsController;
 import controller.DiceController;
 import controller.GameCardsController;
 import controller.PlayTableController;
+import controller.SelectNodeMoveController;
 import controller.ShowGraphController;
 import enums.Rounds;
 import controller.LoadingInternalPlayerController;
@@ -15,11 +16,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Game;
 import model.NodeCoordinate;
 import model.Player;
 import model.PlayersList;
 import threads.ThreadUpdateTooltipPlayer;
+import threads.ThreadDices;
+import threads.ThreadSelectedNodeMove;
 import threads.ThreadTafficNode;
 import threads.ThreadTakeMisionPlayer;
 import javafx.scene.Parent;
@@ -34,7 +38,9 @@ public class Main extends Application
 	private Game game = new Game("Simulador Vial");
 	private ThreadTafficNode threadGame;
 	private ThreadTakeMisionPlayer threadTakeMision;
+	private ThreadDices threadDices;
 	private PlayTableController playTableController;
+	private DiceController diceController;
 
 	@Override
 	public void start(Stage primaryStage)
@@ -75,6 +81,7 @@ public class Main extends Application
 			Scene scene = new Scene(rootLayout);
 			secondStage = new Stage();
 			secondStage.setResizable(false);
+			secondStage.initStyle(StageStyle.UTILITY);
 			secondStage.centerOnScreen();
 			secondStage.setScene(scene);
 			secondStage.show();
@@ -147,7 +154,7 @@ public class Main extends Application
 	/**
 	 * Método que permite visualizar la ventada de los dados
 	 */
-	public void viewWindowDice()
+	public void viewWindowDice(Player currentPlayer)
 	{
 		try
 		{
@@ -155,15 +162,16 @@ public class Main extends Application
 			loader.setLocation(Main.class.getResource("../view/DiceView.fxml"));
 			Parent rootLayout = (AnchorPane) loader.load();
 
-			DiceController diceController = loader.getController();
-			diceController.setMain(this);
+			diceController = loader.getController();
+			diceController.setMain(this, currentPlayer);
 
 			Scene scene = new Scene(rootLayout);
 			Stage stage = new Stage();
 			stage.setResizable(false);
-			stage.setScene(scene);
+			stage.initStyle(StageStyle.UTILITY);
 			stage.setX(1030);
 			stage.setY(30);
+			stage.setScene(scene);
 			stage.show();
 		}
 		catch (IOException e)
@@ -189,10 +197,10 @@ public class Main extends Application
 
 			Scene scene = new Scene(rootLayout);
 			Stage stage = new Stage();
+			stage.centerOnScreen();
+			stage.initStyle(StageStyle.UNDECORATED);
 			stage.setResizable(false);
 			stage.setScene(scene);
-			stage.setX(4);
-			stage.setY(30);
 			stage.show();
 		}
 		catch (IOException e)
@@ -219,6 +227,7 @@ public class Main extends Application
 
 			Scene scene = new Scene(rootLayout);
 			Stage stage = new Stage();
+			stage.initStyle(StageStyle.UNDECORATED);
 			stage.setResizable(false);
 			stage.centerOnScreen();
 			stage.setScene(scene);
@@ -238,7 +247,6 @@ public class Main extends Application
 	public void viewWindowsGame()
 	{
 		viewWindowPlay();
-		viewWindowDice();
 		startThreadGame(getFirstPlayer());
 	}
 
@@ -306,13 +314,33 @@ public class Main extends Application
 	}
 
 	/**
-	 * Método que permite obtener la carta siguiente de la pila
-	 * @return node
+	 * Método que permite abrir la ventana para seleccionar un nodo
 	 */
-//	public NodeCoordinate getNextCardNode()
-//	{
-//		return game.getNextCardNode();
-//	}
+	public void viewWindowSelectNodeMove(Player currentPlayer, int currentValue)
+	{
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("../view/SelectNodeMoveView.fxml"));
+			Parent rootLayout = (AnchorPane) loader.load();
+
+			SelectNodeMoveController selectNodeMoveController = loader.getController();
+			selectNodeMoveController.setMain(this, currentPlayer, currentValue);
+
+			Scene scene = new Scene(rootLayout);
+			Stage stage = new Stage();
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.setScene(scene);
+			stage.show();
+
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Método que permite asignar la lista de cartas nodo
@@ -386,6 +414,16 @@ public class Main extends Application
 	}
 
 	/**
+	 * Método que permite inicial el hilo para tirar los dados
+	 * @param currentPlayer
+	 */
+	public void startThreadDices(Player currentPlayer)
+	{
+		this.threadDices = new ThreadDices("ThreadDices", this, currentPlayer);
+		Platform.runLater(this.threadDices);
+	}
+
+	/**
 	 * Método que permite asignar una misión a un jugador
 	 * @param currentNode nodo o carta elegida
 	 * @param idPlayer id del jugador
@@ -455,4 +493,61 @@ public class Main extends Application
 		return this.game.getStackCardsNode().getCard();
 	}
 
+	/**
+	 * Método que permite obtener los nodos incidentes
+	 * @param currentNode
+	 * @return lstNodes
+	 */
+	public ArrayList<Integer> getNodesIncidents(int currentNode)
+	{
+		return this.game.getNodesIncidents(currentNode);
+	}
+
+	/**
+	 * Método que permite obtener el peso entre 2 nodos
+	 * @param currentNode
+	 * @param nodeDestiny
+	 * @return weight
+	 */
+	public int getWeightNodes(int currentNode, int nodeDestiny)
+	{
+		return this.game.getWeightNodes(currentNode, nodeDestiny);
+	}
+
+	public void movePlayer(Player currentPlayer, int nodeDestiny, int currentValue)
+	{
+		drawBlackNodePrevious(currentPlayer.getCurrentNode());
+
+		currentPlayer = this.game.updateCurrentNodePlayer(currentPlayer.getId(), nodeDestiny);
+
+		drawNewNodePlayer(currentPlayer.getId(), nodeDestiny);
+
+		this.diceController.updateCurrentValuePlayer(currentPlayer, currentValue);
+	}
+
+	private void drawNewNodePlayer(int idPlayer, int nodDestiny)
+	{
+		NodeCoordinate node = this.game.getStackCardsNode().searchNode(nodDestiny);
+
+		if (node != null)
+		{
+			this.playTableController.drawNewNodePlayer(idPlayer, node);
+		}
+	}
+
+	private void drawBlackNodePrevious(int currentNode)
+	{
+		NodeCoordinate node = this.game.getStackCardsNode().searchNode(currentNode);
+
+		if (node != null)
+		{
+			this.playTableController.drawBlackNodePrevious(node);
+		}
+	}
+
+	public void startThreadSelectNodeMove(Player currentPlayer, int currentValue)
+	{
+		ThreadSelectedNodeMove threadSelectedNodeMove = new ThreadSelectedNodeMove("ThreadSelectNodeMove", this, currentValue, currentPlayer);
+		Platform.runLater(threadSelectedNodeMove);
+	}
 }

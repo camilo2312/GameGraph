@@ -90,21 +90,27 @@ public class PlayTableController implements Initializable
 				{
 					case 1:
 						lblPlayer1.setText(playerAux.getUserName());
+						lstPlayers.searchPlayer(playerAux.getId()).setCurrentNode(22);
 						break;
 					case 2:
 						lblPlayer2.setText(playerAux.getUserName());
+						lstPlayers.searchPlayer(playerAux.getId()).setCurrentNode(27);
 						break;
 					case 3:
 						lblPlayer3.setText(playerAux.getUserName());
+						lstPlayers.searchPlayer(playerAux.getId()).setCurrentNode(32);
 						break;
 					case 4:
 						lblPlayer4.setText(playerAux.getUserName());
+						lstPlayers.searchPlayer(playerAux.getId()).setCurrentNode(37);
 						break;
 					case 5:
 						lblPlayer5.setText(playerAux.getUserName());
+						lstPlayers.searchPlayer(playerAux.getId()).setCurrentNode(6);
 						break;
 					case 6:
 						lblPlayer6.setText(playerAux.getUserName());
+						lstPlayers.searchPlayer(playerAux.getId()).setCurrentNode(17);
 						break;
 					default:
 						break;
@@ -276,7 +282,7 @@ public class PlayTableController implements Initializable
 				this.gc.setFill(Color.YELLOW);
 				break;
 			case 32:
-				this.gc.setFill(Color.ORANGERED);
+				this.gc.setFill(Color.ORANGE);
 				break;
 			case 37:
 				this.gc.setFill(Color.rgb(136, 6, 6));
@@ -319,7 +325,7 @@ public class PlayTableController implements Initializable
 				this.gc.fill();
 				break;
 			case 4:
-				this.gc.setFill(Color.ORANGERED);
+				this.gc.setFill(Color.ORANGE);
 				this.gc.fill();
 				break;
 			case 5:
@@ -359,7 +365,7 @@ public class PlayTableController implements Initializable
 
 	public void updateTextPlayer(int idNode, int idPlayer)
 	{
-		String message = "(Debes ir a la ciudad número " + idNode + ")";
+		String message = "Debes ir a la ciudad número " + idNode + "";
 		Tooltip tooltip = new Tooltip();
 		Image img = new Image(getClass().getResourceAsStream("../images/star.png"));
 		ImageView imgView = new ImageView(img);
@@ -392,6 +398,52 @@ public class PlayTableController implements Initializable
 			default:
 				break;
 		}
+	}
+
+	/**
+	 * Nodo que permite pintar de negro el nodo anterior
+	 * del jugador
+	 * @param node nodo anterior
+	 */
+	public void drawBlackNodePrevious(NodeCoordinate node)
+	{
+		this.gc.setFill(Color.BLACK);
+		this.gc.fillOval(node.getPosX(), node.getPosY(), 12, 12);
+	}
+
+	/**
+	 * Método que permite pintar el nodo al que se mueve el jugador
+	 * @param idPlayer identificador del jugador
+	 * @param node nuevo nodo
+	 */
+	public void drawNewNodePlayer(int idPlayer, NodeCoordinate node)
+	{
+		switch (idPlayer)
+		{
+			case 1:
+				this.gc.setFill(Color.GREEN);
+				break;
+			case 2:
+				this.gc.setFill(Color.YELLOW);
+				break;
+			case 3:
+				this.gc.setFill(Color.ORANGE);
+				break;
+			case 4:
+				this.gc.setFill(Color.RED);
+				break;
+			case 5:
+				this.gc.setFill(Color.VIOLET);
+				break;
+			case 6:
+				this.gc.setFill(Color.BLUE);
+				break;
+			default:
+				break;
+		}
+
+		this.gc.fillOval(node.getPosX(), node.getPosY(), 12, 12);
+		this.gc.strokeOval(node.getPosX(), node.getPosY(), 12, 12);
 	}
 
 }

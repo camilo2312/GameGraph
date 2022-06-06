@@ -67,6 +67,9 @@ public class LoadingInternalPlayerController implements Initializable
 		case SEGUNDA_RONDA:
 			lblDescription.setText("Eligiendo una misión al azar");
 			break;
+		case TERCERA_RONDA:
+			lblDescription.setText("Tirando dados \n y \n reocorriendo el tablero");
+			break;
 		default:
 			break;
 		}
@@ -84,6 +87,9 @@ public class LoadingInternalPlayerController implements Initializable
 					break;
 				case SEGUNDA_RONDA:
 					takeMisionPlayer(player, node);
+					break;
+				case TERCERA_RONDA:
+					movePlayer(player);
 					break;
 				default:
 					break;
@@ -160,5 +166,20 @@ public class LoadingInternalPlayerController implements Initializable
     	{
     		this.main.startThreadTakeMision(player);
     	}
+    	else
+    	{
+    		this.main.startThreadDices(player);
+    	}
+	}
+
+	/**
+	 * Método que permite correr el jugador interno del juego
+	 * Aplicar disjktra
+	 * @param player
+	 */
+	private void movePlayer(Player player)
+	{
+		player = player.getNextPlayer();
+		this.main.startThreadDices(player);
 	}
 }

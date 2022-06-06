@@ -8,6 +8,7 @@ public class Player
 	private boolean isHuman;
 	private Player nextPlayer;
 	private NodeCoordinate mision;
+	private int currentNode;
 
 	public Player()
 	{
@@ -72,6 +73,14 @@ public class Player
 	public void setMision(NodeCoordinate mision)
 	{
 		this.mision = mision;
+	}
+
+	public int getCurrentNode() {
+		return currentNode;
+	}
+
+	public void setCurrentNode(int currentNode) {
+		this.currentNode = currentNode;
 	}
 
 
