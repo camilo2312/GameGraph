@@ -22,6 +22,7 @@ public class GameCardsController implements Initializable
 	private Main main;
 	private NodeCoordinate currentNode;
 	private Player currentPlayer;
+//	private int attemps = 0;
 
 	@FXML
     private Label lblTitleCard;
@@ -76,47 +77,55 @@ public class GameCardsController implements Initializable
 	 */
 	private void setValuesLabel()
 	{
-		this.lblNode.setText(currentNode.getNode() + "");
-		this.lblReward.setText(currentNode.getReward() + "");
-		this.lblZone.setText(currentNode.getZone());
-
-		switch (currentNode.getZone().toLowerCase())
+//		if (attemps != 2)
 		{
-			case "centro":
-				lblZone.setTextFill(Color.BLACK);
-				break;
-			case "azul":
-				lblZone.setTextFill(Color.BLUE);
-				break;
-			case "amarillo":
-				lblZone.setTextFill(Color.YELLOW);
-				break;
-			case "verde":
-				lblZone.setTextFill(Color.GREEN);
-				break;
-			case "rojo":
-				lblZone.setTextFill(Color.RED);
-				break;
-			case "naranja":
-				lblZone.setTextFill(Color.ORANGERED);
-				break;
-			case "violeta":
-				lblZone.setTextFill(Color.VIOLET);
-				break;
-			default:
-				break;
-		}
+			this.lblNode.setText(currentNode.getNode() + "");
+			this.lblReward.setText(currentNode.getReward() + "");
+			this.lblZone.setText(currentNode.getZone());
 
-		if (currentNode.isItsMision() || !diferentPosition(currentNode.getNode()))
-		{
-			this.btnTakeMision.setDisable(true);
-		}
-		else
-		{
-			this.btnTakeMision.setDisable(false);
-		}
+			switch (currentNode.getZone().toLowerCase())
+			{
+				case "centro":
+					lblZone.setTextFill(Color.BLACK);
+					break;
+				case "azul":
+					lblZone.setTextFill(Color.BLUE);
+					break;
+				case "amarillo":
+					lblZone.setTextFill(Color.YELLOW);
+					break;
+				case "verde":
+					lblZone.setTextFill(Color.GREEN);
+					break;
+				case "rojo":
+					lblZone.setTextFill(Color.RED);
+					break;
+				case "naranja":
+					lblZone.setTextFill(Color.ORANGERED);
+					break;
+				case "violeta":
+					lblZone.setTextFill(Color.VIOLET);
+					break;
+				default:
+					break;
+			}
 
-		this.anchorPaneFourStar.setVisible(currentNode.getReward() == 4);
+			if (currentNode.isItsMision() || !diferentPosition(currentNode.getNode()))
+			{
+				this.btnTakeMision.setDisable(true);
+			}
+			else
+			{
+				this.btnTakeMision.setDisable(false);
+			}
+
+			this.anchorPaneFourStar.setVisible(currentNode.getReward() == 4);
+//			attemps++;
+		}
+//		else
+//		{
+//			this.showMessage("Error", "Seleccionar misión", "Solo puedes descartar 2 cartas, debes elegir la que tienes actualmente", AlertType.ERROR);
+//		}
 	}
 
 	/**

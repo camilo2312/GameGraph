@@ -9,7 +9,6 @@ public class Graph
 	private int[][] roadMatrix;
 	private int[][] adjacencyMatix;
 	private final int CANT_NODES = 42;
-	private int nodeAux = 0;
 
 	public Graph()
 	{
@@ -214,8 +213,8 @@ public class Graph
 		this.adjacencyMatix[4][19] = 1;
 		this.adjacencyMatix[19][4] = 1;
 
-		this.adjacencyMatix[20][24] = 1;
-		this.adjacencyMatix[24][20] = 1;
+		this.adjacencyMatix[20][29] = 1;
+		this.adjacencyMatix[29][20] = 1;
 
 		this.adjacencyMatix[25][34] = 1;
 		this.adjacencyMatix[34][25] = 1;
@@ -228,7 +227,7 @@ public class Graph
 	 * Método que permite asignar peso de +2 a los arcos incidentes
 	 * @param node indice del nodo
 	 */
-	public void addWeightNode(int node)
+	public void addOrDeleteWeightNode(int node, boolean withWeight)
 	{
 		int currentValue = 0;
 		for (int i = 0; i < matrix.length; i++)
@@ -238,7 +237,14 @@ public class Graph
 				if (j == node && matrix[i][j] != 0)
 				{
 					currentValue = matrix[i][j];
-					matrix[i][j] = currentValue + 2;
+					if(withWeight)
+					{
+						matrix[i][j] = currentValue + 2;
+					}
+					else
+					{
+						matrix[i][j] = currentValue - 2;
+					}
 				}
 			}
 		}

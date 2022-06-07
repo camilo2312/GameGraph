@@ -157,6 +157,9 @@ public class DiceController implements Initializable
 		this.main.startThreadSelectNodeMove(currentPlayer, currentValue);
 	}
 
+	/**
+	 * Método que permite descartar un dado y asignar un nuevo semáforo
+	 */
 	private void discard()
 	{
 		int currentValue =  Integer.parseInt(txtCurrentResult.getText());
@@ -170,16 +173,22 @@ public class DiceController implements Initializable
 		}
 
 		this.txtCurrentResult.setText(currentValue + "");
-		this.main.viewWindowNewTrafficNode();
+		this.btnDiscard.setDisable(true);
+		this.main.viewWindowNewTrafficNode(this.currentPlayer.getUserName());
 	}
 
 	/**
 	 * Método que permite cerrar la ventana actual
 	 */
-	private void close()
+	public void close(boolean noMove)
 	{
 		Stage stage = (Stage) this.btnDice.getScene().getWindow();
 		stage.close();
+		if (noMove)
+		{
+			this.currentPlayer = this.currentPlayer.getNextPlayer();
+			this.main.startThreadDices(this.currentPlayer);
+		}
 	}
 
 	/**
@@ -207,12 +216,18 @@ public class DiceController implements Initializable
 			this.txtCurrentResult.setText(currentValue + "");
 
 			this.showMessage("Éxito", "Movimiento", "Tú movimiento fue exitoso, pero aún te restan valores por mover, intentalo una vez más", AlertType.INFORMATION);
+
+			if (this.currentPlayer.getCurrentNode() == this.currentPlayer.getMision().getNode())
+			{
+				close(false);
+    			this.main.startThreadWinnerPlayer(this.currentPlayer.getUserName());
+			}
 		}
 		else
 		{
 			this.currentPlayer = this.currentPlayer.getNextPlayer();
 			this.main.startThreadDices(this.currentPlayer);
-			close();
+			close(false);
 		}
 	}
 

@@ -61,7 +61,7 @@ public class SelectNodeMoveController
     {
     	if (lblCostMove.getText() != null && !lblCostMove.getText().trim().equals(""))
     	{
-    		int cost = Integer.parseInt(lblCostMove.getText());
+			int cost = Integer.parseInt(lblCostMove.getText());
     		int nodeDestiny = Integer.parseInt(lblDestinyNode.getText());
 
     		if (this.currentValue != 0 && cost <= this.currentValue)
@@ -73,9 +73,8 @@ public class SelectNodeMoveController
     		else
     		{
     			this.showMessage("Error", "Error de movimiento", "El valor restante es menor al costo de movimiento, no puedes realizar el movimiento", AlertType.ERROR);
-    			this.currentPlayer = this.currentPlayer.getNextPlayer();
-    			this.main.startThreadDices(this.currentPlayer);
     			this.close();
+    			this.main.closeWindowDice(true);
     		}
     	}
     }

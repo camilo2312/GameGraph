@@ -197,26 +197,38 @@ public class LoadingInternalPlayerController implements Initializable
 		int costMove = 0;
 		int i = 0;
 
-		String[] nodes = this.main.getShortRoute(player.getCurrentNode(), player.getMision().getNode()).split(",");
-
-		while (result != 0 && costMove <= result)
+		try
 		{
-			costMove = this.main.getWeightNodes(player.getCurrentNode(), Integer.parseInt(nodes[i + 1]));
-			result = result - costMove;
-			this.main.movePlayer(player, Integer.parseInt(nodes[i + 1]), result);
-			i = i + 1;
-			try {
+			String[] nodes = this.main.getShortRoute(player.getCurrentNode(), player.getMision().getNode()).split(",");
+			while (result != 0 && i < nodes.length)
+			{
+				costMove = this.main.getWeightNodes(player.getCurrentNode(), Integer.parseInt(nodes[i + 1]));
+				result = result - costMove;
+				if (result > 0)
+				{
+					this.main.movePlayer(player, Integer.parseInt(nodes[i + 1]), result);
+				}
+				i = i + 1;
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
 
-		player = player.getNextPlayer();
-		this.threadInternalPlayer = new ThreadInternalPlayer("Thread internal player", this.main);
-		Platform.runLater(threadInternalPlayer);
+		if (player.getCurrentNode() == player.getMision().getNode())
+		{
+			this.main.startThreadWinnerPlayer(player.getUserName());
+		}
+		else
+		{
+			player = player.getNextPlayer();
+			this.threadInternalPlayer = new ThreadInternalPlayer("Thread internal player", this.main);
+			Platform.runLater(threadInternalPlayer);
 
-		this.main.startThreadDices(player);
+			this.main.startThreadDices(player);
+		}
+
 	}
 }

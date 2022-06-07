@@ -10,6 +10,7 @@ import controller.GameCardsController;
 import controller.PlayTableController;
 import controller.SelectNodeMoveController;
 import controller.ShowGraphController;
+import controller.WinnerPlayerController;
 import enums.Rounds;
 import controller.LoadingInternalPlayerController;
 import controller.NewTrafficNodeController;
@@ -23,6 +24,7 @@ import model.NodeCoordinate;
 import model.Player;
 import model.PlayersList;
 import threads.ThreadUpdateTooltipPlayer;
+import threads.ThreadWinnerPlayer;
 import threads.ThreadDices;
 import threads.ThreadSelectedNodeMove;
 import threads.ThreadTafficNode;
@@ -85,7 +87,8 @@ public class Main extends Application
 			secondStage.initStyle(StageStyle.UTILITY);
 			if (round == Rounds.TERCERA_RONDA)
 			{
-				secondStage.setX(350);
+				secondStage.setX(1030);
+				secondStage.setY(30);
 			}
 			else
 			{
@@ -249,6 +252,33 @@ public class Main extends Application
 		}
 	}
 
+	public void viewWindowWinnerPlayer(String userName)
+	{
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("../view/WinnerPlayerView.fxml"));
+			Parent rootLayout = (AnchorPane) loader.load();
+
+			WinnerPlayerController winnerPlayerController = loader.getController();
+			winnerPlayerController.setMain(this, userName);
+
+			Scene scene = new Scene(rootLayout);
+			Stage stage = new Stage();
+//			stage.initStyle(StageStyle.UNDECORATED);
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.setScene(scene);
+			stage.show();
+
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Método que permite mostrar las ventanas del juego
 	 */
@@ -339,6 +369,8 @@ public class Main extends Application
 			Stage stage = new Stage();
 			stage.setResizable(false);
 			stage.centerOnScreen();
+//			stage.setX(1030);
+//			stage.setY(800);
 			stage.setScene(scene);
 			stage.show();
 
@@ -350,7 +382,7 @@ public class Main extends Application
 		}
 	}
 
-	public void viewWindowNewTrafficNode()
+	public void viewWindowNewTrafficNode(String userName)
 	{
 		try
 		{
@@ -359,7 +391,7 @@ public class Main extends Application
 			Parent rootLayout = (AnchorPane) loader.load();
 
 			NewTrafficNodeController newTrafficNodeController = loader.getController();
-			newTrafficNodeController.setMain(this);
+			newTrafficNodeController.setMain(this, userName);
 
 			Scene scene = new Scene(rootLayout);
 			Stage stage = new Stage();
@@ -398,6 +430,15 @@ public class Main extends Application
 	public ArrayList<Integer> getNodesKey()
 	{
 		return this.game.getNodesKey();
+	}
+
+	/**
+	 * Método que permite obtener los nodos con semáforo
+	 * @return lstnodes
+	 */
+	public ArrayList<Integer> getNodesTraffic()
+	{
+		return this.game.getNodesTraffic();
 	}
 
 	/**
@@ -646,5 +687,32 @@ public class Main extends Application
 	public boolean notTraffictNode(int node)
 	{
 		return this.game.getStackCardsNode().searchNode(node).isTrafficLight();
+	}
+
+	public void deleteTrafficNode(int idNode)
+	{
+		this.game.deleteTrafficNode(idNode);
+		NodeCoordinate node = this.game.getStackCardsNode().searchNode(idNode);
+		this.playTableController.drawBlackNodePrevious(node);
+	}
+
+	public void closeWindowDice(boolean noMove)
+	{
+		this.diceController.close(noMove);
+
+	}
+
+	public void startThreadWinnerPlayer(String userName)
+	{
+		ThreadWinnerPlayer threadWinnerPlayer = new ThreadWinnerPlayer("ThreadWinnerPlayer", this, userName);
+		Platform.runLater(threadWinnerPlayer);
+
+	}
+
+	public void closeWindows()
+	{
+		this.closeWindowDice(false);
+		this.closeWindowInternalPlayer();
+		this.primaryStage.close();
 	}
 }

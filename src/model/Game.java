@@ -123,6 +123,27 @@ public class Game
 	}
 
 	/**
+	 * Método que permite obtener los nodos con semáforo
+	 * @return lstNodesKey
+	 */
+	public ArrayList<Integer> getNodesTraffic()
+	{
+		ArrayList<Integer> lstNodesKey = new ArrayList<>();
+		NodeCoordinate node = this.stackCardsNode.getHeadCard();
+
+		while(node != null)
+		{
+			if (node.isTrafficLight())
+			{
+				lstNodesKey.add(node.getNode());
+			}
+			node = node.getNextNode();
+		}
+
+		return lstNodesKey;
+	}
+
+	/**
 	 * Método que permite validar si la posición es diferente de los
 	 * nodos de los jugadores
 	 * @param node
@@ -149,15 +170,6 @@ public class Game
 	}
 
 	/**
-	 * Método que permite asignar un peso en el nodo
-	 * @param node
-	 */
-	public void addWeightNode(int node)
-	{
-		this.graph.addWeightNode(node);
-	}
-
-	/**
 	 * Método que permite asignar un semáforo al nodo
 	 * @param node indice del nodo
 	 * @return currentNode
@@ -169,7 +181,7 @@ public class Game
 		if (currentNode != null)
 		{
 			currentNode.setTrafficLight(true);
-			this.graph.addWeightNode(node);
+			this.graph.addOrDeleteWeightNode(node, true);
 		}
 
 		return currentNode;
@@ -274,6 +286,20 @@ public class Game
 	public void calcShortRoute()
 	{
 		this.graph.calcShortRoute();
+	}
+
+	/**
+	 * Método que permite eliminar un nodo con semáforo
+	 * @param idNode
+	 */
+	public void deleteTrafficNode(int idNode)
+	{
+		NodeCoordinate node = this.stackCardsNode.searchNode(idNode);
+		if (node != null)
+		{
+			node.setTrafficLight(false);
+			this.graph.addOrDeleteWeightNode(idNode, false);
+		}
 	}
 
 }
