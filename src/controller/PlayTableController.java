@@ -430,7 +430,7 @@ public class PlayTableController implements Initializable
 				this.gc.setFill(Color.ORANGE);
 				break;
 			case 4:
-				this.gc.setFill(Color.RED);
+				this.gc.setFill(Color.rgb(131, 6, 6));
 				break;
 			case 5:
 				this.gc.setFill(Color.VIOLET);

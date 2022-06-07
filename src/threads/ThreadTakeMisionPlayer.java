@@ -21,7 +21,7 @@ public class ThreadTakeMisionPlayer extends Thread
 	{
 		try
 		{
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 			if (this.player.getIsHuman())
 			{
 				this.main.viewWindowCards(player);

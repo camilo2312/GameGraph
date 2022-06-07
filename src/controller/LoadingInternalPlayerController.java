@@ -110,9 +110,19 @@ public class LoadingInternalPlayerController implements Initializable
 		{
 			node = lstNodes.get(random.nextInt(lstNodes.size()));
 
-		} while(diferentPosition(node) == false);
+		} while(diferentPosition(node) == false && notTraffict(node) == false);
 
 		return node;
+	}
+
+	/**
+	 * Método que permite validar si el nodo ya tiene un semáforo o no
+	 * @param node
+	 * @return
+	 */
+	private boolean notTraffict(int node)
+	{
+		return main.notTraffictNode(node);
 	}
 
 	/**
@@ -144,6 +154,7 @@ public class LoadingInternalPlayerController implements Initializable
     	}
     	else
     	{
+    		this.main.calcShortRoute();
     		this.main.startThreadTakeMision(player);
     	}
 	}
@@ -179,7 +190,33 @@ public class LoadingInternalPlayerController implements Initializable
 	 */
 	private void movePlayer(Player player)
 	{
+		Random random = new Random();
+		int number1 = random.nextInt(6) + 1;
+		int number2 = random.nextInt(6) + 1;
+		int result = number1 + number2;
+		int costMove = 0;
+		int i = 0;
+
+		String[] nodes = this.main.getShortRoute(player.getCurrentNode(), player.getMision().getNode()).split(",");
+
+		while (result != 0 && costMove <= result)
+		{
+			costMove = this.main.getWeightNodes(player.getCurrentNode(), Integer.parseInt(nodes[i + 1]));
+			result = result - costMove;
+			this.main.movePlayer(player, Integer.parseInt(nodes[i + 1]), result);
+			i = i + 1;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		player = player.getNextPlayer();
+		this.threadInternalPlayer = new ThreadInternalPlayer("Thread internal player", this.main);
+		Platform.runLater(threadInternalPlayer);
+
 		this.main.startThreadDices(player);
 	}
 }

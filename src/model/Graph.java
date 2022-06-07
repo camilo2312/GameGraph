@@ -9,6 +9,7 @@ public class Graph
 	private int[][] roadMatrix;
 	private int[][] adjacencyMatix;
 	private final int CANT_NODES = 42;
+	private int nodeAux = 0;
 
 	public Graph()
 	{
@@ -280,31 +281,46 @@ public class Graph
 	/**
 	 * Método que permite calcular la ruta más corta entre los nodos
 	 */
-	public void calcShortRoute() {
-
+	public void calcShortRoute()
+	{
 		this.matrixAux = this.matrix;
 
-		for (int i = 0; i < matrixAux.length; i++) {
-			for (int j = 0; j < matrixAux[i].length; j++) {
-				if (matrixAux[i][j] == 0)
-				{
-					matrixAux[i][j] = 10000;
-				}
-			}
-		}
+		initializeMatrixesAux();
 
 		int i, j, k;
-		for (i = 0; i < this.CANT_NODES; i++)
+		for (k = 0; k < this.CANT_NODES; k++)
 		{
-			for (j = 0; j < this.CANT_NODES; j++)
+			for (i = 0; i < this.CANT_NODES; i++)
 			{
-				for (k = 0; k < this.CANT_NODES; k++)
+				for (j = 0; j < this.CANT_NODES; j++)
 				{
 					if (this.matrixAux[i][k] + this.matrixAux[k][j] < this.matrixAux[i][j])
 					{
 						this.matrixAux[i][j] = this.matrixAux[i][k] + this.matrixAux[k][j];
-						this.roadMatrix[i][j] = k;
+						this.roadMatrix[i][j] = roadMatrix[k][j];
 					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Método que inicializa las matrices auxiliares para ejecutar el algoritmo
+	 */
+	private void initializeMatrixesAux()
+	{
+		for (int i = 0; i < matrixAux.length; i++)
+		{
+			for (int j = 0; j < matrixAux[i].length; j++)
+			{
+				if (matrixAux[i][j] == 0)
+				{
+					matrixAux[i][j] = 10000;
+					roadMatrix[i][j] = -1;
+				}
+				else
+				{
+					roadMatrix[i][j] = i;
 				}
 			}
 		}
@@ -328,17 +344,16 @@ public class Graph
 	 * @param destiny nodo destino
 	 * @return route
 	 */
-	public String shortRoad(int origin, int destiny) {
-		String route;
-		if (origin == destiny)
+	public String shortRoad(int origin, int destiny)
+	{
+		String route = destiny + "";
+		while (this.roadMatrix[origin][destiny] != origin)
 		{
-			route = "" + origin;
-		}
-		else
-		{
-			route = shortRoad(origin, this.roadMatrix[origin][destiny]) + ","
-					+ destiny;
-		}
-		return route;
+            route = roadMatrix[origin][destiny] + "," + route;
+            destiny = roadMatrix[origin][destiny];
+    	}
+    	route = origin + "," + route;
+
+    	return route;
 	}
 }

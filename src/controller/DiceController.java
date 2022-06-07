@@ -22,6 +22,8 @@ public class DiceController implements Initializable
 {
 	 private Main main;
 	 private Player currentPlayer;
+	 private int number = 0;
+	 private int number2 = 0;
 
 	 @FXML
 	 private Label lblTitle;
@@ -56,7 +58,7 @@ public class DiceController implements Initializable
 	 @FXML
 	 void discardAction(ActionEvent event)
 	 {
-
+		 discard();
 	 }
 
      @FXML
@@ -80,8 +82,8 @@ public class DiceController implements Initializable
 	{
 		Image img = null;
 		Random random = new Random();
-		int number =  random.nextInt(6) + 1;
-		int number2 = random.nextInt(6) + 1;
+		number =  random.nextInt(6) + 1;
+		number2 = random.nextInt(6) + 1;
 
 		switch (number)
 		{
@@ -151,7 +153,24 @@ public class DiceController implements Initializable
 	private void move()
 	{
 		int currentValue = Integer.parseInt(txtCurrentResult.getText());
+		this.btnDiscard.setDisable(true);
 		this.main.startThreadSelectNodeMove(currentPlayer, currentValue);
+	}
+
+	private void discard()
+	{
+		int currentValue =  Integer.parseInt(txtCurrentResult.getText());
+		if (number > number2)
+		{
+			currentValue = currentValue - number;
+		}
+		else
+		{
+			currentValue = currentValue - number2;
+		}
+
+		this.txtCurrentResult.setText(currentValue + "");
+		this.main.viewWindowNewTrafficNode();
 	}
 
 	/**

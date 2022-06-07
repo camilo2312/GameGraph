@@ -54,6 +54,7 @@ public class AddTrafficLightsController
         	}
         	else
         	{
+        		this.main.calcShortRoute();
         		this.main.startThreadTakeMision(this.currentPlayer);
         	}
     	}

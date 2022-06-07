@@ -12,6 +12,7 @@ import controller.SelectNodeMoveController;
 import controller.ShowGraphController;
 import enums.Rounds;
 import controller.LoadingInternalPlayerController;
+import controller.NewTrafficNodeController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -82,7 +83,14 @@ public class Main extends Application
 			secondStage = new Stage();
 			secondStage.setResizable(false);
 			secondStage.initStyle(StageStyle.UTILITY);
-			secondStage.centerOnScreen();
+			if (round == Rounds.TERCERA_RONDA)
+			{
+				secondStage.setX(350);
+			}
+			else
+			{
+				secondStage.centerOnScreen();
+			}
 			secondStage.setScene(scene);
 			secondStage.show();
 		}
@@ -342,6 +350,34 @@ public class Main extends Application
 		}
 	}
 
+	public void viewWindowNewTrafficNode()
+	{
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("../view/NewTrafficNodeView.fxml"));
+			Parent rootLayout = (AnchorPane) loader.load();
+
+			NewTrafficNodeController newTrafficNodeController = loader.getController();
+			newTrafficNodeController.setMain(this);
+
+			Scene scene = new Scene(rootLayout);
+			Stage stage = new Stage();
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.setScene(scene);
+			stage.show();
+
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
 	/**
 	 * Método que permite asignar la lista de cartas nodo
 	 * al juego
@@ -514,6 +550,12 @@ public class Main extends Application
 		return this.game.getWeightNodes(currentNode, nodeDestiny);
 	}
 
+	/**
+	 * Método que permite mover el jugador en el tablero
+	 * @param currentPlayer jugador actual
+	 * @param nodeDestiny nodo destino
+	 * @param currentValue el valor actual a mover
+	 */
 	public void movePlayer(Player currentPlayer, int nodeDestiny, int currentValue)
 	{
 		drawBlackNodePrevious(currentPlayer.getCurrentNode());
@@ -522,9 +564,17 @@ public class Main extends Application
 
 		drawNewNodePlayer(currentPlayer.getId(), nodeDestiny);
 
-		this.diceController.updateCurrentValuePlayer(currentPlayer, currentValue);
+		if(currentPlayer.getIsHuman())
+		{
+			this.diceController.updateCurrentValuePlayer(currentPlayer, currentValue);
+		}
 	}
 
+	/**
+	 * Método que permite dibujar el movimiento del jugador
+	 * @param idPlayer identificador del jugador
+	 * @param nodDestiny nodo destino
+	 */
 	private void drawNewNodePlayer(int idPlayer, int nodDestiny)
 	{
 		NodeCoordinate node = this.game.getStackCardsNode().searchNode(nodDestiny);
@@ -535,19 +585,66 @@ public class Main extends Application
 		}
 	}
 
+	/**
+	 * Método que permite pintar el nodo anterior donde estuvo el jugador
+	 * @param currentNode nodo actual
+	 */
 	private void drawBlackNodePrevious(int currentNode)
 	{
 		NodeCoordinate node = this.game.getStackCardsNode().searchNode(currentNode);
 
 		if (node != null)
 		{
-			this.playTableController.drawBlackNodePrevious(node);
+			if (node.isTrafficLight())
+			{
+				this.playTableController.drawTafficNode(node);
+			}
+			else
+			{
+				this.playTableController.drawBlackNodePrevious(node);
+			}
 		}
 	}
 
+	/**
+	 * Método que permite inicializar el hilo para la selección del movimiento
+	 * del jugador
+	 * @param currentPlayer jugador actual
+	 * @param currentValue valor a mover
+	 */
 	public void startThreadSelectNodeMove(Player currentPlayer, int currentValue)
 	{
 		ThreadSelectedNodeMove threadSelectedNodeMove = new ThreadSelectedNodeMove("ThreadSelectNodeMove", this, currentValue, currentPlayer);
 		Platform.runLater(threadSelectedNodeMove);
+	}
+
+	/**
+	 * Método que permite obtener la ruta más corta entre 2 nodos
+	 * @param originNode nodo origen
+	 * @param nodeDestiny nodo destino
+	 * @return
+	 */
+	public String getShortRoute(int originNode, int nodeDestiny)
+	{
+		return this.game.getShortRoute(originNode, nodeDestiny);
+	}
+
+	/**
+	 * Método que permite calcular las rutas cortas de
+	 * todos los nodos
+	 */
+	public void calcShortRoute()
+	{
+		this.game.calcShortRoute();
+	}
+
+	/**
+	 * Método que permite saber si un nodo es o no un semáforo
+	 * @param node
+	 * @return isTrafficLight
+	 */
+	public boolean notTraffictNode(int node)
+	{
+		return this.game.getStackCardsNode().searchNode(node).isTrafficLight();
 	}
 }

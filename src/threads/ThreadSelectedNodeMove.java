@@ -22,7 +22,7 @@ public class ThreadSelectedNodeMove extends Thread
 	{
 		try
 		{
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 			this.main.viewWindowSelectNodeMove(currentPlayer, currentValue);
 			this.interrupt();
 		}

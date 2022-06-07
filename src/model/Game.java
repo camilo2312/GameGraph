@@ -186,11 +186,12 @@ public class Game
 		boolean isAssignment = false;
 
 		Player player = this.lstPlayers.searchPlayer(idPlayer);
+		NodeCoordinate node = this.stackCardsNode.searchNode(currentNode.getNode());
 
-		if (player != null)
+		if (player != null && node != null)
 		{
-			stackCardsNode.searchNode(currentNode.getNode()).setItsMision(true);
-			player.setMision(currentNode);
+			node.setItsMision(true);
+			player.setMision(node);
 			isAssignment = true;
 		}
 
@@ -260,6 +261,19 @@ public class Game
 		player.setCurrentNode(nodeDestiny);
 
 		return player;
+	}
+
+	public String getShortRoute(int currentNode, int node)
+	{
+		return this.graph.shortRoad(currentNode, node);
+	}
+
+	/**
+	 * Método que permite calcular las rutas más cortas
+	 */
+	public void calcShortRoute()
+	{
+		this.graph.calcShortRoute();
 	}
 
 }

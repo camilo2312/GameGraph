@@ -21,7 +21,7 @@ public class ThreadDices extends Thread
 	{
 		try
 		{
-			Thread.sleep(2000);
+			Thread.sleep(1500);
 			if (currentPlayer.getIsHuman())
 			{
 				this.main.viewWindowDice(this.currentPlayer);
